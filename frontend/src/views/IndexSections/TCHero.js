@@ -57,7 +57,7 @@ class TCHero extends React.Component {
                       <Button
                         className="btn-white btn-icon mb-3 mb-sm-0"
                         color="default"
-                        href="http://127.0.0.1:1738/login"
+                        href={process.env.REACT_APP_API_ENDPOINT + "/login"}
                         size="lg"
                       >
                         <span className="btn-inner--icon mr-1">

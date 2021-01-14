@@ -44,8 +44,6 @@ import TCNavbar from "components/Navbars/TCNavbar.js";
 import CardsFooter from "components/Footers/CardsFooter.js";
 
 
-const ENDPOINT = "http://127.0.0.1:1738";
-
 const MODES = {
   LANDING: 0,
   SEARCHING: 1,
@@ -62,7 +60,8 @@ class App extends React.Component {
   }
 
   initSocket() {
-    const socket = socketIOClient(ENDPOINT, { withCredentials: true });
+    console.log(process.env.REACT_APP_API_ENDPOINT)
+    const socket = socketIOClient(process.env.REACT_APP_API_ENDPOINT, { withCredentials: true });
 
     socket.on("match", data => {
       this.handleMatch(data);

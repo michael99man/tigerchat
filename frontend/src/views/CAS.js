@@ -49,10 +49,6 @@ class CAS extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     console.log(this.state)
-
-    fetch(`http://localhost:1738/login?netid=${encodeURIComponent(this.state.netid)}&password=${encodeURIComponent(this.state.password)}`, {
-      method: 'GET',
-    });
   }
 
   // process changes to our form 
@@ -101,7 +97,7 @@ class CAS extends React.Component {
 
                     >
                       <Form method="get"
-                        action="http://127.0.0.1:1738/login">
+                        action={process.env.REACT_APP_API_ENDPOINT + "/login"}>
 
                         <FormGroup>
                           <Input ref=""

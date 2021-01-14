@@ -1,8 +1,10 @@
 const app = require('express')();
 const server = require("http").createServer(app)
+const REACT_SERVER = process.env.REACT_SERVER
+
 const io = require('socket.io')(server, {
     cors: {
-        origin: "http://127.0.0.1:3000",
+        origin: REACT_SERVER,
         methods: ["GET", "POST"],
         credentials: true
     }
@@ -18,7 +20,7 @@ var corsOptions = {
             return;
         }
 
-        if (origin.includes("http://127.0.0.1:")) {
+        if (origin.includes("http://localhost:") || origin.includes(REACT_SERVER)) {
             //console.log("override for testing");
             callback(null, true);
             return;
@@ -44,16 +46,16 @@ io.use((socket, next) => {
     session(socket.request, {}, next);
 });
 
-// send index page on request
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
-});
+if (REACT_SERVER === undefined) {
+    console.error("Error: REACT_SERVER not set")
+    process.exit()
+}
 
 // TEST-ONLY: login page to set session cookie, simulating CAS auth
 app.get('/login', (req, res) => {
     function redirectToApp() {
         res.writeHead(302, {
-            'Location': 'http://127.0.0.1:3000/app'
+            'Location': `${REACT_SERVER}/app`
         });
         res.end();
     }
@@ -76,7 +78,7 @@ app.get('/login', (req, res) => {
         } else {
             // redirect to CAS login page
             res.writeHead(302, {
-                'Location': 'http://127.0.0.1:3000/CAS'
+                'Location': `${REACT_SERVER}/CAS`,
             });
             res.end();
             return
