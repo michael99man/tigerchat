@@ -190,7 +190,8 @@ class App extends React.Component {
 
               <div className="chatWindow">
                 <ul className="chat" id="chatList">
-                  {this.state.messages.map(data => (
+                  { // writes out all messages
+                    this.state.messages.map(data => (
                     <div key={data.id}>
                       {this.state.uid === data.sender_uid ? (
                         <li className="self-msg" key={data.id}>
