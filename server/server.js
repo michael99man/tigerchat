@@ -10,6 +10,7 @@ const io = require('socket.io')(server, {
     }
 }
 )
+const { rejects } = require('assert');
 const cors = require('cors');
 
 var corsOptions = {
@@ -33,11 +34,13 @@ var corsOptions = {
 app.use(cors(corsOptions));
 
 
+// TODO: set store (Redis), default stores in memory
+const sessionStore = new (require("express-session").MemoryStore)();
 const session = require("express-session")({
     secret: "TODO_CHANGE_ME",
     resave: false,
     saveUnitialized: false,
-    // TODO: set store (Redis), default stores in memory
+    store: sessionStore,
 })
 
 // register session middleware
@@ -56,15 +59,35 @@ app.get('/', (req, res) => {
 	res.send("This page does not exist.");
 })
 
+
+// returns true if netid already has an associated session
+async function hasSessionSet(netid) {
+    return new Promise((resolve, reject) => {
+        sessionStore.all(function (err, sessions) {
+            if (err) {
+                console.error(err)
+                reject(err);
+            }
+    
+            // iterate over session id -> sess mapping
+            for (const [_sid, sess] of Object.entries(sessions)) {
+                if (sess.netid == netid) {
+                    resolve(true)
+                }
+            } 
+            resolve(false)
+        });
+    }); 
+}
+
 // TEST-ONLY: login page to set session cookie, simulating CAS auth
-app.get('/login', (req, res) => {
+app.get('/login', async (req, res) => {
     function redirectToApp() {
         res.writeHead(302, {
             'Location': `${REACT_SERVER}/app`
         });
         res.end();
     }
-
 
     // if logged in, direct to app
     if (req.session.netid) {
@@ -75,9 +98,18 @@ app.get('/login', (req, res) => {
         // if includes CAS provided params, process login
         if (req.query.netid) {
             netid = req.query.netid
+
+            // check if someone is already logged in with that name
+            var isSet = await hasSessionSet(netid);
+            if (isSet) {
+                console.log(`${netid} is already logged in`)
+                res.status(401).send(`${netid} is already logged in`)
+                return
+            }
+
+            // log in the user
             console.log("Logging in " + netid)
             req.session.netid = netid
-
             redirectToApp()
             return
         } else {
@@ -171,6 +203,7 @@ for (var msg of messages) {
     socket.on('message', (msg) => {
         netid = socket.request.session.netid;
 
+        // TODO: check if valid
         // get which room that user was in
         var room_id = connections.get(netid).room_id
 
@@ -178,7 +211,7 @@ for (var msg of messages) {
 
         // TODO: generate ID
         msg.id = Math.random().toString(36).substr(2, 10)
-
+        
         // save message in memory
         messages.get(room_id).push(msg)
 
