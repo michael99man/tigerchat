@@ -16,6 +16,7 @@
 
 */
 import React from "react";
+import  { Redirect } from 'react-router-dom'
 
 import socketIOClient from "socket.io-client";
 
@@ -51,7 +52,7 @@ const MODES = {
 }
 
 class App extends React.Component {
-  state = { mode: MODES.LANDING, socket: null, messages: [], uid: Math.random().toString(36).substr(2, 10), msgInput: "" };
+  state = { mode: MODES.LANDING, socket: null, messages: [], uid: Math.random().toString(36).substr(2, 10), msgInput: ""};
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -72,6 +73,12 @@ class App extends React.Component {
       this.handleMessage(msg)
     });
 
+    // detect if we are not logged in
+    socket.on('no-login', () => {
+      // redirect to login
+      window.location.href = process.env.REACT_APP_API_ENDPOINT + "/login";
+    });
+  
     this.setState({ socket: socket })
   }
 
@@ -124,7 +131,6 @@ class App extends React.Component {
 
   AppCard() {
     var mode = this.state.mode
-
     if (mode == MODES.LANDING) {
       return (
         <>

@@ -102,7 +102,7 @@ class CAS extends React.Component {
                         <FormGroup>
                           <Input ref=""
                             id="cas-netid"
-                            placeholder="mman"
+                            placeholder="netid"
                             type="text"
                             name="netid"
                             onChange={e => this.handleInputChange(e)}

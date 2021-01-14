@@ -64,6 +64,7 @@ function registerSocketHooks(io) {
 
         // terminate if not logged in
         if (!netid) {
+            socket.emit("no-login")
             socket.disconnect()
             return
         }
