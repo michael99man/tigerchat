@@ -1,0 +1,45 @@
+:root {
+    --primary: #ff8f00
+}
+
+.fullscreen {
+    height: 100vh
+}
+
+.section-hero {
+    height: 100%
+}
+
+.section-shaped .shape-style-1.shape-default {
+    background: linear-gradient(150deg, #FF671F 23%, #ff8f00 100%, #e87722 60%) !important; }
+
+.app-card {
+    min-width: 500px !important
+}
+
+.text-orange {
+    color: #ff8f00 !important; }
+
+.btn-orange {
+    color: #fff;
+    background-color: #ff8f00;
+    border-color: #ff8f00;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08); }
+    .btn-orange:hover {
+      color: #fff !important;
+      background-color: #e87722;
+      border-color: #e87722; }
+    .btn-orange:focus, .btn-orange.focus {
+      box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08), 0 0 0 0 rgba(252, 122, 93, 0.5); }
+    .btn-orange.disabled, .btn-orange:disabled {
+      color: #fff;
+      background-color: #ff8f00;
+      border-color: #ff8f00; }
+    .btn-orange:not(:disabled):not(.disabled):active, .btn-orange:not(:disabled):not(.disabled).active,
+    .show > .btn-orange.dropdown-toggle {
+      color: #fff;
+      background-color: #ff8f00;
+      border-color: #ff8f00; }
+      .btn-orange:not(:disabled):not(.disabled):active:focus, .btn-orange:not(:disabled):not(.disabled).active:focus,
+      .show > .btn-orange.dropdown-toggle:focus {
+        box-shadow: 0 0 0 0 rgba(252, 122, 93, 0.5); }
