@@ -51,6 +51,11 @@ if (REACT_SERVER === undefined) {
     process.exit()
 }
 
+app.get('/', (req, res) => {
+	res.status(404);
+	res.send("This page does not exist.");
+})
+
 // TEST-ONLY: login page to set session cookie, simulating CAS auth
 app.get('/login', (req, res) => {
     function redirectToApp() {
