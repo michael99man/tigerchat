@@ -1,12 +1,12 @@
 const app = require('express')();
 const server = require("http").createServer(app)
 const io = require('socket.io')(server, {
-        cors: {
-            origin: "http://127.0.0.1:3000",
-            methods: ["GET", "POST"],
-            credentials:true
-        }
+    cors: {
+        origin: "http://127.0.0.1:3000",
+        methods: ["GET", "POST"],
+        credentials: true
     }
+}
 )
 const cors = require('cors');
 
@@ -85,10 +85,16 @@ app.get('/login', (req, res) => {
 });
 
 
-const messages = []
+var ROOM_ID_COUNTER = 0
 
-// map of each connected netid to the associated socket
+// map of room_id -> message list
+const messages = new Map()
+
+// mapping of each connected netid to the associated socket and room
 const connections = new Map()
+
+// mapping of room_id -> pair of users
+const rooms = new Map()
 
 // queue of people waiting to be connected
 var in_search = []
@@ -96,24 +102,53 @@ var in_search = []
 function checkForMatch() {
     if (in_search.length >= 2) {
         // pop the first two and hook them up
+        var userA = in_search.shift();
+        var userB = in_search.shift();
+
+        // tell each other that they've matched
+        dataA = connections.get(userA)
+        dataB = connections.get(userB)
+
+        room_id = ROOM_ID_COUNTER
+        dataA.socket.join(room_id)
+        dataB.socket.join(room_id)
+        dataA.room_id = room_id
+        dataB.room_id = room_id
+
+        messages.set(room_id, [])
+
+        io.to(room_id).emit("match")
+        rooms.set(room_id, { userA: userA, userB: userB })
+        ROOM_ID_COUNTER += 1
+
+        console.log(`Matched users ${userA} and ${userB}, sent to room ${room_id}`)
     }
 }
 
 // define handler functions for each event
 io.on('connection', (socket) => {
     console.log("A user connected with netid " + socket.request.session.netid)
-    connections.set(socket.request.session.netid, socket)
 
-    // send new user entire chat history
-    for (var msg of messages) {
-        socket.emit('message', msg)
+    // terminate if not logged in
+    if (!socket.request.session.netid) {
+        socket.disconnect()
+        return
     }
+
+    connections.set(socket.request.session.netid, { socket: socket, room_id: -1 })
+
+    /* TODO: reconnect to room
+// send new user entire chat history
+for (var msg of messages) {
+    socket.emit('message', msg)
+}
+*/
 
     socket.on('disconnect', () => {
         netid = socket.request.session.netid;
         connections.delete(netid)
 
-        // remove if they are queued
+        // remove user they are queued
         in_search = in_search.filter(user => user !== netid);
 
         console.log(`User ${netid} has disconnected`);
@@ -123,14 +158,25 @@ io.on('connection', (socket) => {
         netid = socket.request.session.netid;
         console.log(`Init match from ${netid}`);
         in_search.push(netid)
+        checkForMatch()
     });
 
     socket.on('message', (msg) => {
         netid = socket.request.session.netid;
-        messages.push(msg)
-        console.log(`Received message from ${netid}`);
-        // emits to ALL connected sockets
-        io.emit('chat message', msg);
+
+        // get which room that user was in
+        var room_id = connections.get(netid).room_id
+
+        console.log(`Received message from ${netid} in room ${room_id}`);
+
+        // TODO: generate ID
+        msg.id = Math.random().toString(36).substr(2, 10)
+
+        // save message in memory
+        messages.get(room_id).push(msg)
+
+        // emits to all connected sockets in that room
+        io.to(room_id).emit('message', msg);
     });
 });
 

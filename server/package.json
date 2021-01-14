@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Michael Man",
-  "contributers": ["Grace Hong"],
+  "contributers": [
+    "Grace Hong"
+  ],
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
