@@ -47,8 +47,8 @@ class TCHero extends React.Component {
                     <img
                       alt="..."
                       className="img-fluid"
-                      src={require("assets/img/brand/argon-react-white.png")}
-                      style={{ width: "200px" }}
+                      src={require("assets/img/brand/tigerchat.png")}
+                      style={{ width: "350px" }}
                     />
                     <p className="lead text-white">
                       A new way to anonymously connect with your community! 
