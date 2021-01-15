@@ -10,6 +10,13 @@
 */
 const auth = require("./auth")
 
+const SYSTEM_MESSAGES = {
+    OTHER_DISCONNECTED: "OTHER_DISCONNECTED",
+    OTHER_RECONNECTED: "OTHER_RECONNECTED",
+    NO_LOGIN: "NO_LOGIN",
+    ALREADY_CONNECTED: "ALREADY_CONNECTED"
+}
+  
 /* 
  * State variables
  */
@@ -64,20 +71,20 @@ function registerSocketHooks(io) {
 
         // terminate if not logged in
         if (!netid) {
-            socket.emit("no-login")
+            socket.emit("system", SYSTEM_MESSAGES.NO_LOGIN)
             socket.disconnect()
             return
         }
 
         // terminate if socket connection already exists
         if (connections.has(netid)) {
-            socket.emit("already-connected")
+            socket.emit("system", SYSTEM_MESSAGES.ALREADY_CONNECTED)
             socket.disconnect()
             return
         }
             
         connections.set(netid, { socket: socket, room_id: -1 })
-        
+
         /* TODO: reconnect to room
     // send new user entire chat history
     for (var msg of messages) {
@@ -87,11 +94,19 @@ function registerSocketHooks(io) {
 
         socket.on('disconnect', () => {
             var netid = auth.getNetid(socket.request)
-            connections.delete(netid)
-
-            // remove user they are queued
+            
+            // remove user if they are queued to match
             in_search = in_search.filter(user => user !== netid);
 
+            console.log(connections.get(netid))
+            // if user is in room, broadcast that they have disconnected
+            var room_id = connections.get(netid).room_id
+            if (room_id !== -1) {
+                console.log(`Broadcasting to room ${room_id} that ${netid} has disconnected`)
+                io.to(room_id).emit('system', SYSTEM_MESSAGES.OTHER_DISCONNECTED)
+            }
+
+            connections.delete(netid)
             console.log(`User ${netid} has disconnected`);
         });
 

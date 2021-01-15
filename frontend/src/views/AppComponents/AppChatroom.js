@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 // reactstrap components
 import {
@@ -6,10 +6,11 @@ import {
   CardBody,
   Input,
   Row,
+  Alert,
 } from "reactstrap";
 
 class AppChatroom extends React.Component {
-  state = { msgInput: "" };
+  state = { parentState: this.props.parentState, msgInput: "", otherDisconnected: this.props.otherDisconnected, dcStartTime: -1, secondsTil: -1 };
 
   constructor(props) {
     super(props)
@@ -17,6 +18,24 @@ class AppChatroom extends React.Component {
   // code to run after render
   componentDidUpdate() {
     this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+  }
+
+  updateTimer() {
+    // compute countdown timer
+    var elapsed = Math.round(new Date().getTime() / 1000 - this.state.dcStartTime);
+    this.setState({ secondsTil: (60 - elapsed) });
+
+    // on zero, check if other person is still disconnected
+    if (this.state.secondsTil <= 0) {
+      if (this.state.otherDisconnected() && this.state.dcStartTime > 0) {
+        // redirect back to app
+        window.location.href = "/app";
+        return;
+      } else {
+        console.log("Aborted timer")
+        clearInterval(this.timer)
+      }
+    }
   }
 
   // process changes to our input field 
@@ -41,10 +60,49 @@ class AppChatroom extends React.Component {
     }
   }
 
+  OtherDisconnectedBanner = () => {
+    // run on state change
+    useEffect(() => {
+
+      if (this.state.otherDisconnected()) {
+        if (this.state.dcStartTime === -1) {
+          // just dc'd, wil reflect now in state
+
+          console.log(this.state)
+          // sets dc time to second epoch
+          this.state.dcStartTime = Math.round(new Date().getTime() / 1000);
+
+          console.log("Disconnected at: " + this.state.dcStartTime);
+
+          // 60 seconds to reconnect
+          this.setState({ secondsTil: 60 })
+          this.timer = setInterval(() => this.updateTimer(), 1000)
+        }
+      } else {
+        // clear interval if it exists
+        if (this.timer) {
+          clearInterval(this.timer)
+        }
+      }
+    });
+
+    if (this.state.dcStartTime == -1) {
+      // no other-dc banner
+      return (null);
+    } else {
+      return (<>
+        <Alert color="danger">
+          <strong>Connection error!</strong> Your partner has disconnected. Leaving chat in {this.state.secondsTil} seconds.
+      </Alert>
+      </>);
+    }
+  }
+
   render() {
     return (
       <>
         <Card className="shadow border-0 app-card">
+          <this.OtherDisconnectedBanner />
           <CardBody className="py-md align-items-center">
             <Row className="row-grid justify-content-center align-items-center">
               <h6 className="text-orange text-uppercase">

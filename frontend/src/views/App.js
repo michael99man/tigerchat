@@ -37,8 +37,23 @@ const MODES = {
   ALREADY_CONNECTED: 3,
 }
 
+const SYSTEM_MESSAGES = {
+  OTHER_DISCONNECTED: "OTHER_DISCONNECTED",
+  OTHER_RECONNECTED: "OTHER_RECONNECTED",
+  NO_LOGIN: "NO_LOGIN",
+  ALREADY_CONNECTED: "ALREADY_CONNECTED"
+}
+
 class App extends React.Component {
-  state = { mode: MODES.LANDING, socket: null, messages: [], uid: Math.random().toString(36).substr(2, 10), msgInput: "", alreadyConnected:false };
+  state = {
+    mode: MODES.LANDING,
+    socket: null, messages: [],
+    uid: Math.random().toString(36).substr(2, 10),
+    msgInput: "",
+    alreadyConnected: false,
+    otherDisconnected: false,
+  };
+  
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -59,22 +74,14 @@ class App extends React.Component {
       this.handleMatch(data);
     });
 
+    // detect incoming "system" event to handle disconnections
+    socket.on('system', msg => {
+      this.handleSystemMessage(msg)
+    });
+
     // detect incoming "chat message" event and write to page
     socket.on('message', msg => {
       this.handleMessage(msg)
-    });
-
-    // detect if we are not logged in
-    socket.on('no-login', () => {
-      // redirect to login
-      window.location.href = process.env.REACT_APP_API_ENDPOINT + "/login";
-    });
-
-    // detect if we are already connected in a different window/broswer/device
-    socket.on('already-connected', () => {
-      console.log('Already connected')
-      this.setState({alreadyConnected: true})
-      this.state.socket.close()
     });
   }
 
@@ -105,12 +112,30 @@ class App extends React.Component {
 
     // append to messages list
     this.setState({ messages: [...this.state.messages, { id: msg.id, sender_uid: msg.sender_uid, text: msg.text }] })
-    this.scrollToBottom()
   }
 
-  scrollToBottom = () => {
-    //TODO: FIX ME
-    // this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+  // handles all possible operational messages
+  handleSystemMessage(msg) {
+    switch (msg) {
+      case SYSTEM_MESSAGES.NO_LOGIN:
+        // redirect to login page
+        window.location.href = process.env.REACT_APP_API_ENDPOINT + "/login";
+        return;
+      case SYSTEM_MESSAGES.ALREADY_CONNECTED:
+        // detect when we are already connected in a different window/browser/device
+        console.log('Already connected')
+        this.setState({ alreadyConnected: true })
+        this.state.socket.close()
+        return;
+      case SYSTEM_MESSAGES.OTHER_DISCONNECTED:
+        console.log("Other has disconnected");
+        // trigger disconnection message and timer
+        this.setState({otherDisconnected: true})
+        break;
+      default:
+        console.log("Unrecognized system message: " + msg);
+        return;
+    }
   }
 
   getUID = () => {
@@ -121,7 +146,7 @@ class App extends React.Component {
     var mode = this.state.mode
     if (mode == MODES.LANDING) {
       return (
-        <AppLanding handleClick={e => this.findMatch(e)} alreadyConnected={this.state.alreadyConnected}/>
+        <AppLanding handleClick={e => this.findMatch(e)} alreadyConnected={this.state.alreadyConnected} />
       );
     } else if (mode == MODES.SEARCHING) {
       return (
@@ -130,7 +155,7 @@ class App extends React.Component {
     } else if (mode == MODES.IN_ROOM) {
       // https://www.freecodecamp.org/news/building-a-modern-chat-application-with-react-js-558896622194/
       return (
-        <AppChatroom messages={this.state.messages} sendMessage={(msg) => this.sendMessage(msg)} getUID={this.getUID} />
+        <AppChatroom messages={this.state.messages} sendMessage={(msg) => this.sendMessage(msg)} getUID={this.getUID} otherDisconnected={() => this.state.otherDisconnected}/>
       )
     }
     return (
