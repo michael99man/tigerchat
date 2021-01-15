@@ -16,7 +16,6 @@
 
 */
 import React from "react";
-import  { Redirect } from 'react-router-dom'
 
 import socketIOClient from "socket.io-client";
 
@@ -60,6 +59,10 @@ class App extends React.Component {
     this.initSocket()
   }
 
+  componentWillUnmount() {
+    this.state.socket.close()
+  }
+
   initSocket() {
     console.log(process.env.REACT_APP_API_ENDPOINT)
     const socket = socketIOClient(process.env.REACT_APP_API_ENDPOINT, { withCredentials: true });
@@ -80,6 +83,11 @@ class App extends React.Component {
     });
   
     this.setState({ socket: socket })
+  }
+
+  onRouteChanged() {
+    alert("CLOSING SOCKET")
+    this.state.socket.close()
   }
 
   // begin searching for a match
