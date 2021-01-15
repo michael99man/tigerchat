@@ -21,27 +21,15 @@ import socketIOClient from "socket.io-client";
 
 // reactstrap components
 import {
-  Badge,
-  Button,
-  Card,
-  CardBody,
-  CardImg,
-  FormGroup,
-  Form,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
   Container,
-  Row,
-  Col
 } from "reactstrap";
 
-
-import { Dot } from 'react-animated-dots';
 // core components
 import TCNavbar from "components/Navbars/TCNavbar.js";
-import CardsFooter from "components/Footers/CardsFooter.js";
+import AppLanding from "views/AppComponents/AppLanding.js";
+import AppSearching from "views/AppComponents/AppSearching.js";
+import AppChatroom from "views/AppComponents/AppChatroom.js";
+
 
 
 const MODES = {
@@ -51,7 +39,7 @@ const MODES = {
 }
 
 class App extends React.Component {
-  state = { mode: MODES.LANDING, socket: null, messages: [], uid: Math.random().toString(36).substr(2, 10), msgInput: ""};
+  state = { mode: MODES.LANDING, socket: null, messages: [], uid: Math.random().toString(36).substr(2, 10), msgInput: "" };
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -81,7 +69,7 @@ class App extends React.Component {
       // redirect to login
       window.location.href = process.env.REACT_APP_API_ENDPOINT + "/login";
     });
-  
+
     this.setState({ socket: socket })
   }
 
@@ -103,6 +91,10 @@ class App extends React.Component {
     this.setState({ mode: MODES.IN_ROOM })
   }
 
+  sendMessage(msg) {
+    this.state.socket.emit("message", msg)
+  }
+
   handleMessage(msg) {
     console.log(`Received message ${msg}`)
 
@@ -111,152 +103,30 @@ class App extends React.Component {
     this.scrollToBottom()
   }
 
-  // process changes to our input field 
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-
-    this.setState({
-      [name]: value
-    });
-  }
-
-  // handle submission of text
-  onKeyDown(event) {
-    if (event.key === 'Enter' && this.state.msgInput !== "") {
-      console.log(this.state)
-      // emit to 
-      var message = { sender_uid: this.state.uid, text: this.state.msgInput }
-      this.setState({ msgInput: "" })
-      this.state.socket.emit("message", message)
-    }
-  }
-
   scrollToBottom = () => {
-    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+    //TODO: FIX ME
+    // this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+  }
+
+  getUID = () => {
+    return this.state.uid
   }
 
   AppCard() {
     var mode = this.state.mode
     if (mode == MODES.LANDING) {
       return (
-        <>
-          <Card className="shadow border-0 app-card">
-            <CardBody className="py-xl align-items-center">
-
-              <Row className="row-grid justify-content-center align-items-center">
-                <h6 className="text-orange text-uppercase">
-                  Chat with a random Tiger!
-          </h6>
-              </Row>
-
-              <Row className="row-grid justify-content-center">
-                <Button
-                  className="mt-4"
-                  color="orange"
-                  onClick={e => this.findMatch(e)}
-                >
-                  Find match
-          </Button>
-              </Row>
-            </CardBody>
-          </Card>
-        </>
+        <AppLanding handleClick={e => this.findMatch(e)} />
       );
     } else if (mode == MODES.SEARCHING) {
       return (
-        <>
-          <Card className="shadow border-0 app-card">
-            <CardBody className="py-xl align-items-center">
-              <Row className="row-grid justify-content-center align-items-center">
-                <h6 className="text-orange text-uppercase">
-                  Chat with a random Tiger!
-            </h6>
-              </Row>
-
-              <Row className="row-grid justify-content-center">
-                <Button
-                  className="mt-4 disabled"
-                  color="orange"
-                  onClick={e => e.preventDefault()}
-                >
-                  SEARCHING
-                    <Dot>.</Dot>
-                  <Dot>.</Dot>
-                  <Dot>.</Dot>
-                </Button>
-              </Row>
-            </CardBody>
-          </Card>
-        </>);
+        <AppSearching />
+      );
     } else if (mode == MODES.IN_ROOM) {
       // https://www.freecodecamp.org/news/building-a-modern-chat-application-with-react-js-558896622194/
       return (
-        <>
-          <Card className="shadow border-0 app-card">
-            <CardBody className="py-md align-items-center">
-              <Row className="row-grid justify-content-center align-items-center">
-                <h6 className="text-orange text-uppercase">
-                  YOU'RE CHATTING!
-            </h6>
-              </Row>
-
-              <div className="chatWindow">
-                <ul className="chat" id="chatList">
-                  { // writes out all messages
-                    this.state.messages.map(data => (
-                    <div key={data.id}>
-                      {this.state.uid === data.sender_uid ? (
-                        <li className="self-msg" key={data.id}>
-                          <div className="msg">
-                            <p>You</p>
-                            <div className="message"> {data.text}</div>
-                          </div>
-                        </li>
-                      ) : (
-                          <li className="other-msg" key={data.id}>
-                            <div className="msg">
-                              <p>Stranger</p>
-                              <div className="message"> {data.text} </div>
-                            </div>
-                          </li>
-                        )}
-                    </div>
-                  ))}
-                  {/* allows us to scroll down */}
-                  <div style={{ float: "left", clear: "both" }}
-                    ref={(el) => { this.messagesEnd = el; }}>
-                  </div>
-                </ul>
-
-                {/*
-                  <div className="chatInputWrapper">
-                    <form onSubmit={this.handleSubmit}>
-                      <input
-                        className="textarea input"
-                        type="text"
-                        placeholder="Enter your message..."
-                        onChange={this.handleChange}
-                      />
-                  </form>
-                   </div>
-                   */}
-
-              </div>
-              <Input
-                className="msg-input"
-                placeholder="Text your message here"
-                type="text"
-                name="msgInput"
-                onChange={e => this.handleInputChange(e)}
-                onKeyDown={e => this.onKeyDown(e)}
-                value={this.state.msgInput}
-              />
-
-            </CardBody>
-          </Card>
-        </>);
+        <AppChatroom messages={this.state.messages} sendMessage={(msg) => this.sendMessage(msg)} getUID={this.getUID} />
+      )
     }
     return (
       <>
