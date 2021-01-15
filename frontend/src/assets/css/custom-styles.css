@@ -11,11 +11,24 @@
   background-color: #ffffff !important; }
 
 .lead {
-  color: #000000 !important;
+  color: #B2AFAE !important;
 }
 
 .btn-icon {
   font-family: Monaco!important;
+}
+
+.section {
+  font-family: Monaco!important;
+}
+
+.title {
+  font-family: 'Trebuchet MS', sans-serif !important;
+}
+
+.sub {
+    font-family: 'Trebuchet MS', sans-serif;
+    color: #ff8000 !important;
 }
 
 .typewriter {
@@ -47,8 +60,30 @@
     min-width: 500px !important
 }
 
+.nav-link-icon {
+  color: #000000 !important;
+}
+
+.nav-link-inner--text {
+  font-family: Monaco;
+  color: #B2AFAE !important; 
+}
+
+.collapse {
+  background-color: #ffffff !important;
+}
+
+.navbar-main {
+  background-color: #ffffff !important;
+}
+
 .text-orange {
     color: #ff8f00 !important; }
+
+.authors {
+  color: #B2AFAE !important; 
+  font-size: 12px;
+}
 
 .btn-orange {
     color: #fff;

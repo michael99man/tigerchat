@@ -98,21 +98,21 @@ class TCNavbar extends React.Component {
                         />
                       </Link>
                     </Col>
-                    <Col className="collapse-close" xs="6">
+                    {/*<Col className="collapse-close" xs="6">
                       <button className="navbar-toggler" id="navbar_global">
                         <span />
                         <span />
                       </button>
-                    </Col>
+                    </Col>*/}
                   </Row>
                 </div>
                 <Nav className="navbar-nav-hover align-items-lg-center" navbar>
-                  <UncontrolledDropdown nav>
+                  <UncontrolledDropdown nav> 
                     <DropdownToggle nav>
                       <i className="ni ni-ui-04 d-lg-none mr-1" />
-                      <span className="nav-link-inner--text">Components</span>
+                      <a href="how"><span className="nav-link-inner--text">HOW</span></a>
                     </DropdownToggle>
-                    <DropdownMenu className="dropdown-menu-xl">
+                    {/* <DropdownMenu className="dropdown-menu-xl">
                       <div className="dropdown-menu-inner">
                         <Media
                           className="d-flex align-items-center"
@@ -170,13 +170,14 @@ class TCNavbar extends React.Component {
                         </Media>
                       </div>
                     </DropdownMenu>
+                  */}
                   </UncontrolledDropdown>
                   <UncontrolledDropdown nav>
                     <DropdownToggle nav>
                       <i className="ni ni-collection d-lg-none mr-1" />
-                      <span className="nav-link-inner--text">Examples</span>
+                      <span className="nav-link-inner--text">WHY</span>
                     </DropdownToggle>
-                    <DropdownMenu>
+                    {/*<DropdownMenu>
                       <DropdownItem to="/landing-page" tag={Link}>
                         Landing
                       </DropdownItem>
@@ -189,7 +190,7 @@ class TCNavbar extends React.Component {
                       <DropdownItem to="/register-page" tag={Link}>
                         Register
                       </DropdownItem>
-                    </DropdownMenu>
+                    </DropdownMenu>*/}
                   </UncontrolledDropdown>
                 </Nav>
                 <Nav className="align-items-lg-center ml-lg-auto" navbar>

@@ -62,70 +62,68 @@ class Index extends React.Component {
               <Container>
                 <Row className="row-grid align-items-center">
                   <Col className="order-md-2" md="6">
-                    <img
+                    {/*<img
                       alt="..."
                       className="img-fluid floating"
                       src={require("assets/img/theme/promo-1.png")}
-                    />
+                    />*/}
                   </Col>
                   <Col className="order-md-1" md="6">
                     <div className="pr-md-5">
-                      <div className="icon icon-lg icon-shape icon-shape-success shadow rounded-circle mb-5">
+                      {/* <div className="icon icon-lg icon-shape icon-shape-success shadow rounded-circle mb-5">
                         <i className="ni ni-settings-gear-65" />
-                      </div>
-                      <h3>Awesome features</h3>
-                      <p>
-                        The kit comes with three pre-built pages to help you get
-                        started faster. You can change the text and images and
-                        you're good to go.
+                      </div> */}
+                      <h3><div className="sub">HOW IT WORKS</div></h3>
+                      <p class ="lead">
+                        Tigerchat allows you to meet other Princeton students under the condition of anonymity on a text-based platform. 
                     </p>
                       <ul className="list-unstyled mt-5">
                         <li className="py-2">
                           <div className="d-flex align-items-center">
-                            <div>
+                            {/*<div>
                               <Badge
                                 className="badge-circle mr-3"
                                 color="success"
                               >
                                 <i className="ni ni-settings-gear-65" />
                               </Badge>
-                            </div>
+                            </div>*/}
                             <div>
-                              <h6 className="mb-0">
-                                Carefully crafted components
-                            </h6>
+                              <p>
+                                Match by interest
+                            </p>
                             </div>
                           </div>
                         </li>
                         <li className="py-2">
                           <div className="d-flex align-items-center">
-                            <div>
+                            {/*<div>
                               <Badge
                                 className="badge-circle mr-3"
                                 color="success"
                               >
                                 <i className="ni ni-html5" />
                               </Badge>
-                            </div>
+                            </div>*/}
                             <div>
-                              <h6 className="mb-0">Amazing page examples</h6>
+                              <p>Chat with no pressure</p>
                             </div>
                           </div>
                         </li>
                         <li className="py-2">
                           <div className="d-flex align-items-center">
-                            <div>
+                            {/*<div>
                               <Badge
                                 className="badge-circle mr-3"
                                 color="success"
                               >
                                 <i className="ni ni-satisfied" />
                               </Badge>
-                            </div>
+                            </div>*/}
                             <div>
-                              <h6 className="mb-0">
-                                Super friendly support team
-                            </h6>
+                              <p>
+                                Reveal identity or log out
+                            </p>
                             </div>
                           </div>
                         </li>
@@ -139,7 +137,7 @@ class Index extends React.Component {
               <Container>
                 <Row className="row-grid align-items-center">
                   <Col md="6">
-                    <Card className="bg-default shadow border-0">
+                    {/*<Card className="bg-default shadow border-0">
                       <CardImg
                         alt="..."
                         src={require("assets/img/theme/img-1-1200x1000.jpg")}
@@ -171,66 +169,69 @@ class Index extends React.Component {
                           continue whatever happens.
                       </p>
                       </blockquote>
-                    </Card>
+                    </Card>*/}
                   </Col>
                   <Col md="6">
                     <div className="pl-md-5">
-                      <div className="icon icon-lg icon-shape icon-shape-warning shadow rounded-circle mb-5">
+                      {/*<div className="icon icon-lg icon-shape icon-shape-warning shadow rounded-circle mb-5">
                         <i className="ni ni-settings" />
-                      </div>
-                      <h3>Our customers</h3>
+                      </div>*/}
+                      <h3 className = "sub">OUR VALUES</h3>
                       <p className="lead">
-                        Don't let your uses guess by attaching tooltips and
-                        popoves to any element. Just make sure you enable them
-                        first via JavaScript.
+                        By concentrating on a specific community (Princeton), we're providing
+                        a meaningful, secure, and safe place to connect.
+                    </p>
+                    <p>
+                        <em>COMMUNITY.</em> Users are matched by interests, served an icebreaker, 
+                        and if both opt-in, reveal their identity
+                        (to make a new friend).
                     </p>
                       <p>
-                        The kit comes with three pre-built pages to help you get
-                        started faster. You can change the text and images and
-                        you're good to go.
+                        <em>SECURITY.</em> Chats are wiped once they're done, i.e. conversations
+                        aren't stored permanently. 
                     </p>
-                      <p>
-                        The kit comes with three pre-built pages to help you get
-                        started faster. You can change the text and images and
-                        you're good to go.
+                    <p>
+                        <em>SAFETY.</em> Users engaging in inappropriate behavior can get flagged
+                        and kicked; conversations are reviewed using randomly generated id's for 
+                        users.
                     </p>
-                      <a
+                      {/*<a
                         className="font-weight-bold text-warning mt-5"
                         href="#pablo"
                         onClick={e => e.preventDefault()}
                       >
                         A beautiful UI Kit for impactful websites
-                    </a>
+                    </a>*/}
                     </div>
                   </Col>
                 </Row>
               </Container>
             </section>
-            <section className="section pb-0 bg-gradient-warning">
+            <section className="section pb-0 bg-gradient-secondary">
               <Container>
                 <Row className="row-grid align-items-center">
                   <Col className="order-lg-2 ml-lg-auto" md="6">
                     <div className="position-relative pl-md-5">
-                      <img
+                      {/*<img
                         alt="..."
                         className="img-center img-fluid"
                         src={require("assets/img/ill/ill-2.svg")}
-                      />
+                      />*/}
                     </div>
                   </Col>
                   <Col className="order-lg-1" lg="6">
                     <div className="d-flex px-3">
-                      <div>
+                      {/*<div>
                         <div className="icon icon-lg icon-shape bg-gradient-white shadow rounded-circle text-primary">
                           <i className="ni ni-building text-primary" />
                         </div>
-                      </div>
+                      </div>*/}
                       <div className="pl-4">
-                        <h4 className="display-3 text-white">Modern Interface</h4>
-                        <p className="text-white">
-                          The Arctic Ocean freezes every winter and much of the
-                          sea-ice then thaws every summer, and that process will
-                          continue whatever.
+                        <h3 className = "sub">USER-FRIENDLY CHAT</h3>
+                        <p>
+                          We're updating anon chat to a more intuitive and
+                          cleaner platform. With users first in mind, we're designing
+                          to include gifs, stickers, and games for community members.
                       </p>
                       </div>
                     </div>
@@ -244,20 +245,19 @@ class Index extends React.Component {
                           </div>
                           <div className="pl-4">
                             <h5 className="title text-success">
-                              Awesome Support
+                              SIMPLE DESIGN.
                           </h5>
                             <p>
-                              The Arctic Ocean freezes every winter and much of
-                              the sea-ice then thaws every summer, and that
-                              process will continue whatever.
+                              No messy ads on the side. Just chat & meet
+                              someone new!
                           </p>
-                            <a
+                            {/*<a
                               className="text-success"
                               href="#pablo"
                               onClick={e => e.preventDefault()}
                             >
                               Learn more
-                          </a>
+                          </a>*/}
                           </div>
                         </div>
                       </CardBody>
@@ -272,20 +272,19 @@ class Index extends React.Component {
                           </div>
                           <div className="pl-4">
                             <h5 className="title text-warning">
-                              Modular Components
+                              FUN & FLEXIBLE
                           </h5>
                             <p>
-                              The Arctic Ocean freezes every winter and much of
-                              the sea-ice then thaws every summer, and that
-                              process will continue whatever.
+                              Bored of chat? Try some of our
+                              gifs or emojis!
                           </p>
-                            <a
+                            {/*<a
                               className="text-warning"
                               href="#pablo"
                               onClick={e => e.preventDefault()}
                             >
                               Learn more
-                          </a>
+                          </a>*/}
                           </div>
                         </div>
                       </CardBody>
@@ -314,15 +313,18 @@ class Index extends React.Component {
               <Container>
                 <Row className="justify-content-center text-center mb-lg">
                   <Col lg="8">
-                    <h2 className="display-3">The amazing Team</h2>
-                    <p className="lead text-muted">
-                      According to the National Oceanic and Atmospheric
-                      Administration, Ted, Scambos, NSIDClead scentist, puts the
-                      potentially record maximum.
+                    <h2 className="sub">WHY WE'RE HERE</h2>
+                    <p>
+                      At some point, you plateau in the number of people you meet
+                      in college. Tigerchat was created to help you make the most of the
+                      incredible network you have at university; it's a non-judgemental
+                      platform where you can meet peers and chat about the going-on's in
+                      a safe and secure way.
                   </p>
+                  <p class = "authors">Created by @glhong and @mman</p>
                   </Col>
                 </Row>
-                <Row>
+                {/*<Row>
                   <Col className="mb-5 mb-lg-0" lg="3" md="6">
                     <div className="px-4">
                       <img
@@ -493,11 +495,11 @@ class Index extends React.Component {
                       </div>
                     </div>
                   </Col>
-                </Row>
+                </Row>*/}
               </Container>
             </section>
             <section className="section section-lg pt-0">
-              <Container>
+              {/*<Container>
                 <Card className="bg-gradient-warning shadow-lg border-0">
                   <div className="p-5">
                     <Row className="align-items-center">
@@ -572,7 +574,7 @@ class Index extends React.Component {
                   </p>
                   </Col>
                 </Row>
-              </Container>
+              </Container>*/}
               {/* SVG separator */}
               <div className="separator separator-bottom separator-skew zindex-100">
                 <svg
