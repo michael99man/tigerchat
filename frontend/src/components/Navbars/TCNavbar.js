@@ -261,16 +261,16 @@ class TCNavbar extends React.Component {
                   </NavItem>
                   <NavItem className="d-none d-lg-block ml-lg-4">
                     <Button
-                      className="btn-neutral btn-icon"
+                      className="btn-white btn-icon"
                       color="default"
-                      href="https://www.creative-tim.com/product/argon-design-system-react?ref=adsr-navbar"
+                      href={process.env.REACT_APP_API_ENDPOINT + "/login"}
                       target="_blank"
                     >
                       <span className="btn-inner--icon">
-                        <i className="fa fa-cloud-download mr-2" />
+                        <i className="ni ni-chat-round mr-2" />
                       </span>
                       <span className="nav-link-inner--text ml-1">
-                        Download
+                        Open App
                       </span>
                     </Button>
                   </NavItem>
