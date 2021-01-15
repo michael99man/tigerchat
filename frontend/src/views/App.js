@@ -30,16 +30,15 @@ import AppLanding from "views/AppComponents/AppLanding.js";
 import AppSearching from "views/AppComponents/AppSearching.js";
 import AppChatroom from "views/AppComponents/AppChatroom.js";
 
-
-
 const MODES = {
   LANDING: 0,
   SEARCHING: 1,
   IN_ROOM: 2,
+  ALREADY_CONNECTED: 3,
 }
 
 class App extends React.Component {
-  state = { mode: MODES.LANDING, socket: null, messages: [], uid: Math.random().toString(36).substr(2, 10), msgInput: "" };
+  state = { mode: MODES.LANDING, socket: null, messages: [], uid: Math.random().toString(36).substr(2, 10), msgInput: "", alreadyConnected:false };
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -54,6 +53,7 @@ class App extends React.Component {
   initSocket() {
     console.log(process.env.REACT_APP_API_ENDPOINT)
     const socket = socketIOClient(process.env.REACT_APP_API_ENDPOINT, { withCredentials: true });
+    this.setState({ socket: socket })
 
     socket.on("match", data => {
       this.handleMatch(data);
@@ -70,7 +70,12 @@ class App extends React.Component {
       window.location.href = process.env.REACT_APP_API_ENDPOINT + "/login";
     });
 
-    this.setState({ socket: socket })
+    // detect if we are already connected in a different window/broswer/device
+    socket.on('already-connected', () => {
+      console.log('Already connected')
+      this.setState({alreadyConnected: true})
+      this.state.socket.close()
+    });
   }
 
   onRouteChanged() {
@@ -116,7 +121,7 @@ class App extends React.Component {
     var mode = this.state.mode
     if (mode == MODES.LANDING) {
       return (
-        <AppLanding handleClick={e => this.findMatch(e)} />
+        <AppLanding handleClick={e => this.findMatch(e)} alreadyConnected={this.state.alreadyConnected}/>
       );
     } else if (mode == MODES.SEARCHING) {
       return (

@@ -15,7 +15,8 @@ import {
   InputGroup,
   Container,
   Row,
-  Col
+  Col,
+  Alert,
 } from "reactstrap";
 
 
@@ -25,9 +26,19 @@ class AppLanding extends React.Component {
   }
 
   render() {
+    console.log(this.props);
     return (
       <>
+       
         <Card className="shadow border-0 app-card">
+        {
+          // if already connected, print an error message
+          this.props.alreadyConnected
+          &&
+          <Alert color="danger">
+            <strong>Connection error!</strong> You're already connected to TigerChat on another device.
+        </Alert>
+        }
           <CardBody className="py-xl align-items-center">
 
             <Row className="row-grid justify-content-center align-items-center">
@@ -41,6 +52,7 @@ class AppLanding extends React.Component {
                 className="mt-4"
                 color="orange"
                 onClick={e => this.click(e)}
+                disabled={this.props.alreadyConnected}
               >
                 Find match
         </Button>

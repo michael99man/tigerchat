@@ -37,7 +37,6 @@ class AppChatroom extends React.Component {
       // emit to 
       var message = { sender_uid: this.props.getUID(), text: this.state.msgInput }
       this.setState({ msgInput: "" })
-
       this.props.sendMessage(message)
     }
   }

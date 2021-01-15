@@ -69,8 +69,15 @@ function registerSocketHooks(io) {
             return
         }
 
+        // terminate if socket connection already exists
+        if (connections.has(netid)) {
+            socket.emit("already-connected")
+            socket.disconnect()
+            return
+        }
+            
         connections.set(netid, { socket: socket, room_id: -1 })
-
+        
         /* TODO: reconnect to room
     // send new user entire chat history
     for (var msg of messages) {
