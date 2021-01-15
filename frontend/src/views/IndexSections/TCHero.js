@@ -50,20 +50,17 @@ class TCHero extends React.Component {
                       src={require("assets/img/brand/tigerchat.png")}
                       style={{ width: "350px" }}
                     />
-                    <p className="lead text-white">
-                      A new way to anonymously connect with your community! 
+                    <p className="lead text-white typewriter">
+                      A new way to anonymously connect 
                     </p>
                     <div className="btn-wrapper mt-5">
                       <Button
-                        className="btn-white btn-icon mb-3 mb-sm-0"
+                        className="btn-orange btn-icon mb-3 mb-sm-0"
                         color="default"
                         href={process.env.REACT_APP_API_ENDPOINT + "/login"}
                         size="lg"
                       >
-                        <span className="btn-inner--icon mr-1">
-                          <i className="ni ni-chat-round" />
-                        </span>
-                        <span className="btn-inner--text">Chat now!</span>
+                        <span className="btn-inner--text">Chat</span>
                       </Button>{" "}
                     </div>
                   </Col>
