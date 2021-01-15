@@ -16,6 +16,7 @@
 
 */
 import React from "react";
+import { Prompt } from 'react-router'
 
 import socketIOClient from "socket.io-client";
 
@@ -63,6 +64,15 @@ class App extends React.Component {
 
   componentWillUnmount() {
     this.state.socket.close()
+  }
+
+  componentDidUpdate() {
+    // prevent user from accidentally refreshing
+    if (this.state.mode == MODES.IN_ROOM && !this.state.otherDisconnected) {
+      window.onbeforeunload = () => true
+    } else {
+      window.onbeforeunload = undefined
+    }
   }
 
   initSocket() {
@@ -170,6 +180,10 @@ class App extends React.Component {
     return (
       <>
         <TCNavbar />
+        <Prompt
+          when={this.state.mode == MODES.IN_ROOM && !this.state.otherDisconnected}
+          message="You're currently chatting with someone. Are you sure you want to leave?"
+        />
         <main ref="main">
           <div className="position-relative">
             {/* shape Hero */}
