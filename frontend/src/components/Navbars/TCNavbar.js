@@ -46,22 +46,6 @@ class TCNavbar extends React.Component {
     // initialise
     headroom.init();
   }
-  state = {
-    collapseClasses: "",
-    collapseOpen: false
-  };
-
-  onExiting = () => {
-    this.setState({
-      collapseClasses: "collapsing-out"
-    });
-  };
-
-  onExited = () => {
-    this.setState({
-      collapseClasses: ""
-    });
-  };
 
   render() {
     return (
@@ -82,13 +66,6 @@ class TCNavbar extends React.Component {
               <button className="navbar-toggler" id="navbar_global">
                 <span className="navbar-toggler-icon" />
               </button>
-              <UncontrolledCollapse
-                toggler="#navbar_global"
-                navbar
-                className={this.state.collapseClasses}
-                onExiting={this.onExiting}
-                onExited={this.onExited}
-              >
                 <div className="navbar-collapse-header">
                   <Row>
                     <Col className="collapse-brand" xs="6">
@@ -116,7 +93,7 @@ class TCNavbar extends React.Component {
                     className='scroll-link'
                     activeClass='scroll-link-active'
                     
-                  ><span className="nav-link-inner--text">WHY</span></Link>
+                  ><span className="nav-link-inner--text">HOW</span></Link>
                   <Link
                     to="why-section"
                     spy={true}
@@ -124,7 +101,7 @@ class TCNavbar extends React.Component {
                     duration={500}
                     className='scroll-link pl-4'
                     activeClass='scroll-link-active'
-                  > <span className="nav-link-inner--text">HOW</span></Link>
+                  > <span className="nav-link-inner--text">WHY</span></Link>
                 </Nav>
                 <Nav className="align-items-lg-center ml-lg-auto" navbar>
                   {/*
@@ -209,7 +186,6 @@ class TCNavbar extends React.Component {
                     </Button>
                   </NavItem>
                 </Nav>
-              </UncontrolledCollapse>
             </Container>
           </Navbar>
         </header>

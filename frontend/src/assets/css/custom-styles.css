@@ -32,11 +32,13 @@
 }
 
 /* Links in navbar */
-.scroll-link {
-}
 .scroll-link-active {
   border-bottom: 1px solid #333;
 }
+
+/* disable hiding of navbar on scroll */
+.headroom--unpinned {
+  transform: translateY(0%); }
 
 .centered {
   justify-content: center !important;
