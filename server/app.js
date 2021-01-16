@@ -5,19 +5,31 @@
 =========================================================
 
 * Defines socket logic for core app functionality
+* Includes all business logic for all
 
 =========================================================
 */
 const auth = require("./auth")
+const { getStudent } = require( "./students")
 
+/* 
+ * Constants
+ */
 const SYSTEM_MESSAGES = {
     OTHER_DISCONNECTED: "OTHER_DISCONNECTED",
     OTHER_RECONNECTED: "OTHER_RECONNECTED",
     NO_LOGIN: "NO_LOGIN",
     ALREADY_CONNECTED: "ALREADY_CONNECTED"
 }
-  
-/* 
+
+const MATCH_MODE = {
+    ANYONE: 0,
+    CLASS: 1,
+    MAJOR: 2,
+    RES_COLLEGE: 3,
+}
+
+/*
  * State variables
  */
 
@@ -61,7 +73,7 @@ function checkForMatch(io) {
 }
 
 /* 
- * Core app logic
+ * Core socket hooks
  */
 function registerSocketHooks(io) {
     // define handler functions for each event
@@ -82,16 +94,15 @@ function registerSocketHooks(io) {
             socket.disconnect()
             return
         }
-            
+        // store connection 
         connections.set(netid, { socket: socket, room_id: -1 })
 
-        /* TODO: reconnect to room
-    // send new user entire chat history
-    for (var msg of messages) {
-        socket.emit('message', msg)
-    }
-    */
+        // send the user's profile to themselves
+        var profile = getStudent(netid);
+        console.log("Sending profile: " + JSON.stringify(profile))
+        socket.emit("profile", profile)
 
+        // handle disconnection
         socket.on('disconnect', () => {
             var netid = auth.getNetid(socket.request)
             
@@ -110,9 +121,11 @@ function registerSocketHooks(io) {
             console.log(`User ${netid} has disconnected`);
         });
 
-        socket.on('find-match', (msg) => {
+        socket.on('find-match', (match_mode) => {
             var netid = auth.getNetid(socket.request)
-            console.log(`Init match from ${netid}`);
+            console.log(`Init match from ${netid} in mode ${match_mode}`);
+
+            // TODO: use match_mode value
             in_search.push(netid)
             checkForMatch(io)
         });

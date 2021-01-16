@@ -40,7 +40,11 @@ cipher.on('end', function () {
 });
 
 function getStudent(netid) {
-    return students.get(netid);
+    if (students.has(netid)) {
+        return students.get(netid);
+    } else {
+        return {}
+    }
 }
 
 module.exports = {getStudent}
