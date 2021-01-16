@@ -17,7 +17,6 @@
 */
 import React from "react";
 import { Prompt } from 'react-router'
-
 import socketIOClient from "socket.io-client";
 
 // reactstrap components
@@ -31,30 +30,24 @@ import AppLanding from "views/AppComponents/AppLanding.js";
 import AppSearching from "views/AppComponents/AppSearching.js";
 import AppChatroom from "views/AppComponents/AppChatroom.js";
 
-const MODES = {
-  LANDING: 0,
-  SEARCHING: 1,
-  IN_ROOM: 2,
-  ALREADY_CONNECTED: 3,
-}
-
-const SYSTEM_MESSAGES = {
-  OTHER_DISCONNECTED: "OTHER_DISCONNECTED",
-  OTHER_RECONNECTED: "OTHER_RECONNECTED",
-  NO_LOGIN: "NO_LOGIN",
-  ALREADY_CONNECTED: "ALREADY_CONNECTED"
-}
+import {APP_MODES, SYSTEM_MESSAGES} from "views/Constants.js"
 
 class App extends React.Component {
   state = {
-    mode: MODES.LANDING,
+    mode: APP_MODES.LANDING,
     socket: null, messages: [],
     uid: Math.random().toString(36).substr(2, 10),
+    // contents of input field
     msgInput: "",
+    // bool representing whether another socket connection active
     alreadyConnected: false,
+    // bool representing whether other user has disconnected
     otherDisconnected: false,
+
+    // my profile information
+    profile: null,
   };
-  
+
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -67,8 +60,8 @@ class App extends React.Component {
   }
 
   componentDidUpdate() {
-    // prevent user from accidentally refreshing
-    if (this.state.mode == MODES.IN_ROOM && !this.state.otherDisconnected) {
+    // prevent user from accidentally refreshing while in a chat
+    if (this.state.mode == APP_MODES.IN_ROOM && !this.state.otherDisconnected) {
       window.onbeforeunload = () => true
     } else {
       window.onbeforeunload = undefined
@@ -80,18 +73,24 @@ class App extends React.Component {
     const socket = socketIOClient(process.env.REACT_APP_API_ENDPOINT, { withCredentials: true });
     this.setState({ socket: socket })
 
-    socket.on("match", data => {
-      this.handleMatch(data);
+    // receive information about myself
+    socket.on("profile", data => {
+      this.setState({ profile: data });
     });
 
-    // detect incoming "system" event to handle disconnections
+    socket.on("match", data => {
+      this.handleMatch(data)
+    });
+
+    // detect incoming system event to handle disconnections
     socket.on('system', msg => {
       this.handleSystemMessage(msg)
     });
-
     // detect incoming "chat message" event and write to page
     socket.on('message', msg => {
-      this.handleMessage(msg)
+      console.log(`Received message ${msg}`)
+      // append to messages list
+      this.setState({ messages: [...this.state.messages, { id: msg.id, sender_uid: msg.sender_uid, text: msg.text }] })
     });
   }
 
@@ -101,27 +100,22 @@ class App extends React.Component {
   }
 
   // begin searching for a match
-  findMatch(e) {
-    e.preventDefault();
-    this.setState({ mode: MODES.SEARCHING })
-
-    this.state.socket.emit("find-match")
+  findMatch(match_mode) {
+    // TODO: add criteria
+    console.log("Finding a match in mode: " + match_mode)
+    this.setState({ mode: APP_MODES.SEARCHING, match_mode: match_mode})
+    this.state.socket.emit("find-match", match_mode)
   }
 
   handleMatch(other) {
+    // TODO: process data for their UID + profile
     console.log(`Matched with ${other}`)
-    this.setState({ mode: MODES.IN_ROOM })
+    this.setState({ mode: APP_MODES.IN_ROOM })
   }
 
   sendMessage(msg) {
+    // TODO: add emoji, other data support
     this.state.socket.emit("message", msg)
-  }
-
-  handleMessage(msg) {
-    console.log(`Received message ${msg}`)
-
-    // append to messages list
-    this.setState({ messages: [...this.state.messages, { id: msg.id, sender_uid: msg.sender_uid, text: msg.text }] })
   }
 
   // handles all possible operational messages
@@ -140,7 +134,7 @@ class App extends React.Component {
       case SYSTEM_MESSAGES.OTHER_DISCONNECTED:
         console.log("Other has disconnected");
         // trigger disconnection message and timer
-        this.setState({otherDisconnected: true})
+        this.setState({ otherDisconnected: true })
         break;
       default:
         console.log("Unrecognized system message: " + msg);
@@ -154,18 +148,18 @@ class App extends React.Component {
 
   AppCard() {
     var mode = this.state.mode
-    if (mode == MODES.LANDING) {
+    if (mode == APP_MODES.LANDING) {
       return (
         <AppLanding handleClick={e => this.findMatch(e)} alreadyConnected={this.state.alreadyConnected} />
       );
-    } else if (mode == MODES.SEARCHING) {
+    } else if (mode == APP_MODES.SEARCHING) {
       return (
         <AppSearching />
       );
-    } else if (mode == MODES.IN_ROOM) {
+    } else if (mode == APP_MODES.IN_ROOM) {
       // https://www.freecodecamp.org/news/building-a-modern-chat-application-with-react-js-558896622194/
       return (
-        <AppChatroom messages={this.state.messages} sendMessage={(msg) => this.sendMessage(msg)} getUID={this.getUID} otherDisconnected={() => this.state.otherDisconnected}/>
+        <AppChatroom messages={this.state.messages} sendMessage={(msg) => this.sendMessage(msg)} getUID={this.getUID} otherDisconnected={() => this.state.otherDisconnected} />
       )
     }
     return (
@@ -181,7 +175,7 @@ class App extends React.Component {
       <>
         <TCNavbar />
         <Prompt
-          when={this.state.mode == MODES.IN_ROOM && !this.state.otherDisconnected}
+          when={this.state.mode == APP_MODES.IN_ROOM && !this.state.otherDisconnected}
           message="You're currently chatting with someone. Are you sure you want to leave?"
         />
         <main ref="main">

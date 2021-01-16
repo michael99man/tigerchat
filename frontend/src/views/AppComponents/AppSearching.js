@@ -12,6 +12,8 @@ import { Dot } from 'react-animated-dots';
 
 class AppSearching extends React.Component {
 
+  // get info from parent 
+  
   render() {
     return (
       <>

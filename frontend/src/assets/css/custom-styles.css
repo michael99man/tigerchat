@@ -31,6 +31,10 @@
     color: #ff8000 !important;
 }
 
+.centered {
+  justify-content: center !important;
+}
+
 .typewriter {
   overflow: hidden;
   /*border-right: .15em solid orange; /* The typwriter cursor */

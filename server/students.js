@@ -30,7 +30,6 @@ cipher.on('readable', function() {
     decrypted += data.toString();
 });
 
-
 cipher.on('end', function () {
         var arr = JSON.parse(decrypted)
 
