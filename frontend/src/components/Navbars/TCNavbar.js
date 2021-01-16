@@ -108,9 +108,6 @@ class TCNavbar extends React.Component {
                   </Row>
                 </div>
                 <Nav className="navbar-nav-hover align-items-lg-center" navbar>
-
-                  
-                  
                   <Link
                     to="how-section"
                     spy={true}

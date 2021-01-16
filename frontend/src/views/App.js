@@ -75,6 +75,8 @@ class App extends React.Component {
 
     // receive information about myself
     socket.on("profile", data => {
+      console.log("Received profile data")
+      console.log(data)
       this.setState({ profile: data });
     });
 
@@ -95,7 +97,6 @@ class App extends React.Component {
   }
 
   onRouteChanged() {
-    alert("CLOSING SOCKET")
     this.state.socket.close()
   }
 
