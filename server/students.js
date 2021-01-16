@@ -43,7 +43,7 @@ function getStudent(netid) {
     if (students.has(netid)) {
         return students.get(netid);
     } else {
-        return {}
+        return null
     }
 }
 

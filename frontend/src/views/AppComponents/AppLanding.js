@@ -55,12 +55,13 @@ class AppLanding extends React.Component {
   }
 
   render() {
+    console.log(this.props.getProfile())
     return (
       <>
         <Card className="shadow border-0 app-card">
           {
             // if already connected, print an error message
-            this.props.alreadyConnected
+            this.props.alreadyConnected()
             &&
             <Alert color="danger">
               <strong>Connection error!</strong> You're already connected to TigerChat on another device.
@@ -85,13 +86,13 @@ class AppLanding extends React.Component {
                     <DropdownItem onClick={() => this.handleChange(MATCH_MODE.ANYONE)}>
                       {MATCH_MODE_TEXT[MATCH_MODE.ANYONE][0]}
                     </DropdownItem>
-                    <DropdownItem onClick={() => this.handleChange(MATCH_MODE.CLASS)}>
+                    <DropdownItem onClick={() => this.handleChange(MATCH_MODE.CLASS)} disabled={this.props.getProfile() === null}>
                       {MATCH_MODE_TEXT[MATCH_MODE.CLASS][0]}
                     </DropdownItem>
-                    <DropdownItem onClick={() => this.handleChange(MATCH_MODE.MAJOR)}>
+                    <DropdownItem onClick={() => this.handleChange(MATCH_MODE.MAJOR)} disabled={this.props.getProfile() === null}>
                       {MATCH_MODE_TEXT[MATCH_MODE.MAJOR][0]}
                     </DropdownItem>
-                    <DropdownItem onClick={() => this.handleChange(MATCH_MODE.RES_COLLEGE)}>
+                    <DropdownItem onClick={() => this.handleChange(MATCH_MODE.RES_COLLEGE)} disabled={this.props.getProfile() === null}>
                       {MATCH_MODE_TEXT[MATCH_MODE.RES_COLLEGE][0]}
                     </DropdownItem>
                   </DropdownMenu>

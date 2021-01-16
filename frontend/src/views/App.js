@@ -151,7 +151,7 @@ class App extends React.Component {
     var mode = this.state.mode
     if (mode == APP_MODES.LANDING) {
       return (
-        <AppLanding handleClick={e => this.findMatch(e)} alreadyConnected={this.state.alreadyConnected} />
+        <AppLanding handleClick={e => this.findMatch(e)} alreadyConnected={() => this.state.alreadyConnected} getProfile={() => this.state.profile}/>
       );
     } else if (mode == APP_MODES.SEARCHING) {
       return (

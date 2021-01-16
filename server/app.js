@@ -104,7 +104,7 @@ function isMatch(mp_a, mp_b) {
             return true;
         }
         // invariant: profile will be defined for _mp_a at this point
-        if (_mp_b.profile == null) {
+        if (_mp_b.profile === null) {
             return false;
         }
 
