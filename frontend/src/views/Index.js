@@ -58,7 +58,7 @@ class Index extends React.Component {
         <main ref="main">
           <div className="position-relative">
             <TCHero />
-            <section className="section section-lg">
+            <section className="section section-lg" id="how-section">
               <Container>
                 <Row className="row-grid align-items-center">
                   <Col className="order-md-2" md="6">
@@ -309,7 +309,7 @@ class Index extends React.Component {
                 </svg>
               </div>
             </section>
-            <section className="section section-lg">
+            <section className="section section-lg" id="why-section">
               <Container>
                 <Row className="justify-content-center text-center mb-lg">
                   <Col lg="8">
