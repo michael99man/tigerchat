@@ -12,10 +12,13 @@ import {
 
 class AppChatroom extends React.Component {
   state = {
-    parentState: this.props.parentState,
+    messages: [],
     msgInput: "",
-    otherDisconnected: this.props.otherDisconnected,
-    electedReveal: false, 
+    
+    // reveal state
+    electedReveal: false,
+    revealed: false,
+    otherNetid: null,
 
     // reveal banner
     revealBannerOn: false,
@@ -27,20 +30,37 @@ class AppChatroom extends React.Component {
 
   constructor(props) {
     super(props)
+
+    // set reveal event handler
+    this.props.socket.on("reveal", otherNetid => {
+      this.handleReveal(otherNetid)
+    });
+
+    // detect incoming "chat message" event and write to page
+    this.props.socket.on('message', msg => {
+      console.log(`Received message ${msg}`)
+      // append to messages list
+      this.setState({ messages: [...this.state.messages, { id: msg.id, sender_uid: msg.sender_uid, text: msg.text }] })
+    });
   }
+
   // code to run after render
   componentDidUpdate() {
     this.messagesEnd.scrollIntoView({ behavior: "smooth" });
   }
 
-  updateTimer() {
+  /*
+   * OTHER DISCONNECTED LOGIC
+   */
+
+  updateBootTimer() {
     // compute countdown timer
     var elapsed = Math.round(new Date().getTime() / 1000 - this.state.dcStartTime);
     this.setState({ secondsTil: (60 - elapsed) });
 
     // on zero, check if other person is still disconnected
     if (this.state.secondsTil <= 0) {
-      if (this.state.otherDisconnected() && this.state.dcStartTime > 0) {
+      if (this.props.otherDisconnected() && this.state.dcStartTime > 0) {
         // redirect back to app
         window.location.href = "/app";
         return;
@@ -51,33 +71,10 @@ class AppChatroom extends React.Component {
     }
   }
 
-  // process changes to our input field 
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-
-    this.setState({
-      [name]: value
-    });
-  }
-
-  // handle submission of text
-  onKeyDown(event) {
-    if (event.key === 'Enter' && this.state.msgInput !== "") {
-      console.log(this.state)
-      // emit to 
-      var message = { sender_uid: this.props.getUserId(), text: this.state.msgInput }
-      this.setState({ msgInput: "" })
-      this.props.sendMessage(message)
-    }
-  }
-
   OtherDisconnectedBanner = () => {
     // run on state change
     useEffect(() => {
-
-      if (this.state.otherDisconnected()) {
+      if (this.props.otherDisconnected()) {
         if (this.state.dcStartTime === -1) {
           // just dc'd, wil reflect now in state
 
@@ -89,7 +86,7 @@ class AppChatroom extends React.Component {
 
           // 60 seconds to reconnect
           this.setState({ secondsTil: 60 })
-          this.timer = setInterval(() => this.updateTimer(), 1000)
+          this.timer = setInterval(() => this.updateBootTimer(), 1000)
         }
       } else {
         // clear interval if it exists
@@ -111,11 +108,14 @@ class AppChatroom extends React.Component {
     }
   }
 
+  /*
+   * REVEAL LOGIC
+   */
 
   RevealedBanner = () => {
     // run on state change
     useEffect(() => {
-      if (this.props.isRevealed() && !this.state.shownRevealBanner) {
+      if (this.state.revealed && !this.state.shownRevealBanner) {
         // show reveal banner
         this.setState({ revealBannerOn: true, shownRevealBanner: true })
 
@@ -128,11 +128,57 @@ class AppChatroom extends React.Component {
       // TODO: animations to show and hide
       return (<>
         <Alert color="success">
-          <strong>You've both revealed!</strong> You're currently talking to {this.props.otherNetid()}.
+          <strong>You've both revealed!</strong> You're currently talking to {this.state.otherNetid}.
       </Alert>
       </>);
     }
     return (null)
+  }
+
+  // elects into the reveal mechanism or opting out
+  handleElectReveal(doReveal) {
+    if (doReveal) {
+      console.log(`Electing to reveal my identity`)
+    } else {
+      console.log("Electing to not reveal my identity")
+    }
+    this.props.socket.emit("elect-reveal", doReveal)
+  }
+
+  // revealed and netid is known
+  handleReveal(otherNetid) {
+    console.log(`Received identity! The stranger is ${otherNetid}`)
+    this.setState({ revealed: true, otherNetid })
+  }
+
+  /*
+   * MESSAGING LOGIC
+   */
+  sendMessage(msg) {
+    // TODO: add emoji, other data support
+    this.props.socket.emit("message", msg)
+  }
+
+  // process changes to our input field 
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+  }
+
+  // handle submission of text
+  onKeyDown(event) {
+    if (event.key === 'Enter' && this.state.msgInput !== "") {
+      console.log(this.state)
+      // emit to 
+      var message = { sender_uid: this.props.getUserId(), text: this.state.msgInput }
+      this.setState({ msgInput: "" })
+      this.sendMessage(message)
+    }
   }
 
   render() {
@@ -151,7 +197,7 @@ class AppChatroom extends React.Component {
             <div className="chatWindow">
               <ul className="chat" id="chatList">
                 { // writes out all messages
-                  this.props.messages.map(data => (
+                  this.state.messages.map(data => (
                     <div key={data.id}>
                       {this.props.getUserId() === data.sender_uid ? (
                         <li className="self-msg" key={data.id}>
@@ -163,7 +209,8 @@ class AppChatroom extends React.Component {
                       ) : (
                           <li className="other-msg" key={data.id}>
                             <div className="msg">
-                              <p>{this.props.otherNetid()}</p>
+                              <p>{this.state.otherNetid === null ? "Stranger" : this.state.otherNetid}
+                              </p>
                               <div className="message"> {data.text} </div>
                             </div>
                           </li>
@@ -208,7 +255,7 @@ class AppChatroom extends React.Component {
                   e.preventDefault();
                   this.setState({ electedReveal: true })
                   // TODO: enable cancel reveal
-                  this.props.handleElectReveal(true);
+                  this.handleElectReveal(true);
                 }} >
                 Reveal your identity
               </Button>

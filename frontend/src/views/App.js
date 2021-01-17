@@ -33,12 +33,12 @@ import AppChatroom from "views/AppComponents/AppChatroom.js";
 import {APP_MODES, SYSTEM_MESSAGES, MATCH_MODE} from "views/Constants.js"
 
 class App extends React.Component {
+  // retains general state of the app and connection
   state = {
     mode: APP_MODES.LANDING,
-    socket: null, messages: [],
+    socket: null,
     user_id: null, 
-    // contents of input field
-    msgInput: "",
+
     // bool representing whether another socket connection active
     alreadyConnected: false,
     // bool representing whether other user has disconnected
@@ -87,20 +87,10 @@ class App extends React.Component {
     socket.on("match", data => {
       this.handleMatch(data)
     });
-
-    socket.on("reveal", other_netid => {
-      this.handleReveal(other_netid)
-    });
-
+    
     // detect incoming system event to handle disconnections
     socket.on('system', msg => {
       this.handleSystemMessage(msg)
-    });
-    // detect incoming "chat message" event and write to page
-    socket.on('message', msg => {
-      console.log(`Received message ${msg}`)
-      // append to messages list
-      this.setState({ messages: [...this.state.messages, { id: msg.id, sender_uid: msg.sender_uid, text: msg.text }] })
     });
   }
 
@@ -121,30 +111,7 @@ class App extends React.Component {
     console.log(`Matched with ${other}`)
     this.setState({ mode: APP_MODES.IN_ROOM })
   }
-
-  // elects into the reveal mechanism or opting out
-  handleElectReveal(doReveal) {
-    if (doReveal) {
-      console.log(`Electing to reveal my identity`)
-    } else {
-      console.log("Electing to not reveal my identity")
-    }
-    this.state.socket.emit("elect-reveal", doReveal)
-  }
   
-  // revealed and netid is known
-  handleReveal(other_netid) {
-    console.log(`Received identity! The stranger is ${other_netid}`)
-    this.setState({ revealed: true, other_netid })
-    
-    // TODO: add a banner!
-  }
-
-  sendMessage(msg) {
-    // TODO: add emoji, other data support
-    this.state.socket.emit("message", msg)
-  }
-
   cancelSearch() {
     this.state.socket.emit("cancel-match")
     this.setState({mode: APP_MODES.LANDING})
@@ -193,13 +160,12 @@ class App extends React.Component {
       // https://www.freecodecamp.org/news/building-a-modern-chat-application-with-react-js-558896622194/
       return (
         <AppChatroom
-          messages={this.state.messages}
-          sendMessage={(msg) => this.sendMessage(msg)}
+          socket={this.state.socket}
           getUserId={() => this.state.user_id}
           otherDisconnected={() => this.state.otherDisconnected}
-          handleElectReveal={(doReveal) => this.handleElectReveal(doReveal)}
-          isRevealed={() => this.state.revealed}
-          otherNetid={() => this.state.revealed ? this.state.other_netid : "Stranger"}
+
+          //isRevealed={() => this.state.revealed}
+          //otherNetid={() => this.state.revealed ? this.state.other_netid : "Stranger"}
         />
       )
     }
