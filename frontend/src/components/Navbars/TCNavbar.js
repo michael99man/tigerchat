@@ -99,9 +99,18 @@ class TCNavbar extends React.Component {
                     spy={true}
                     smooth={true}
                     duration={500}
-                    className='scroll-link pl-4'
+                    className='scroll-link ml-4'
                     activeClass='scroll-link-active'
-                  > <span className="nav-link-inner--text">WHY</span></Link>
+                > <span className="nav-link-inner--text">WHY</span></Link>
+                
+                <Link
+                    to="faq-section"
+                    spy={true}
+                    smooth={true}
+                    duration={500}
+                    className='scroll-link ml-4'
+                    activeClass='scroll-link-active'
+                  > <span className="nav-link-inner--text">FAQ</span></Link>
                 </Nav>
                 <Nav className="align-items-lg-center ml-lg-auto" navbar>
                   {/*
@@ -172,15 +181,16 @@ class TCNavbar extends React.Component {
                   </NavItem>
                   <NavItem className="d-none d-lg-block ml-lg-4">
                     <Button
-                      className="btn-white btn-icon"
+                      className="btn-orange btn-icon"
                       color="default"
                       href={process.env.REACT_APP_API_ENDPOINT + "/login"}
                       target="_blank"
                     >
                       <span className="btn-inner--icon">
                         <i className="ni ni-chat-round mr-2" />
-                      </span>
-                      <span className="nav-link-inner--text ml-1">
+                    </span>
+                    
+                      <span className="btn-inner--text ml-1">
                         Open App
                       </span>
                     </Button>

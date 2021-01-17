@@ -60,7 +60,7 @@ class TCHero extends React.Component {
                         href={process.env.REACT_APP_API_ENDPOINT + "/login"}
                         size="lg"
                       >
-                        <span className="btn-inner--text">Chat</span>
+                        <span className="btn-inner--text">Chat Now!</span>
                       </Button>{" "}
                     </div>
                   </Col>
