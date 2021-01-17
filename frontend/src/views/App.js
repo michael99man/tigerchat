@@ -36,7 +36,7 @@ class App extends React.Component {
   state = {
     mode: APP_MODES.LANDING,
     socket: null, messages: [],
-    uid: Math.random().toString(36).substr(2, 10),
+    user_id: null, 
     // contents of input field
     msgInput: "",
     // bool representing whether another socket connection active
@@ -78,6 +78,10 @@ class App extends React.Component {
       console.log("Received profile data")
       console.log(data)
       this.setState({ profile: data });
+    });
+    socket.on("user_id", user_id => {
+      console.log(`Received my user_id ${user_id}`)
+      this.setState({ user_id: user_id });
     });
 
     socket.on("match", data => {
@@ -143,10 +147,6 @@ class App extends React.Component {
     }
   }
 
-  getUID = () => {
-    return this.state.uid
-  }
-
   AppCard() {
     var mode = this.state.mode
     if (mode == APP_MODES.LANDING) {
@@ -160,7 +160,7 @@ class App extends React.Component {
     } else if (mode == APP_MODES.IN_ROOM) {
       // https://www.freecodecamp.org/news/building-a-modern-chat-application-with-react-js-558896622194/
       return (
-        <AppChatroom messages={this.state.messages} sendMessage={(msg) => this.sendMessage(msg)} getUID={this.getUID} otherDisconnected={() => this.state.otherDisconnected} />
+        <AppChatroom messages={this.state.messages} sendMessage={(msg) => this.sendMessage(msg)} getUserId={() => this.state.user_id} otherDisconnected={() => this.state.otherDisconnected} />
       )
     }
     return (

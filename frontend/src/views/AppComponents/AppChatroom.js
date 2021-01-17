@@ -54,7 +54,7 @@ class AppChatroom extends React.Component {
     if (event.key === 'Enter' && this.state.msgInput !== "") {
       console.log(this.state)
       // emit to 
-      var message = { sender_uid: this.props.getUID(), text: this.state.msgInput }
+      var message = { sender_uid: this.props.getUserId(), text: this.state.msgInput }
       this.setState({ msgInput: "" })
       this.props.sendMessage(message)
     }
@@ -115,7 +115,7 @@ class AppChatroom extends React.Component {
                 { // writes out all messages
                   this.props.messages.map(data => (
                     <div key={data.id}>
-                      {this.props.getUID() === data.sender_uid ? (
+                      {this.props.getUserId() === data.sender_uid ? (
                         <li className="self-msg" key={data.id}>
                           <div className="msg">
                             <p>You</p>

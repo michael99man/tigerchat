@@ -11,6 +11,7 @@
 */
 const auth = require("./auth")
 const { getStudent } = require("./students")
+const { v1: uuidv1 } = require('uuid');
 
 /* 
  * Constants
@@ -172,7 +173,6 @@ function matchUsers(io, netid_a, netid_b) {
 // returns whether or not to terminate connection
 const onSocketConnect = (io, socket, netid) => {
     var netid = auth.getNetid(socket.request)
-    console.log("A user connected with netid " + netid)
     // terminate if not logged in
     if (!netid) {
         socket.emit("system", SYSTEM_MESSAGES.NO_LOGIN)
@@ -184,14 +184,21 @@ const onSocketConnect = (io, socket, netid) => {
         socket.emit("system", SYSTEM_MESSAGES.ALREADY_CONNECTED)
         return true
     }
+
+    // generate user uuid
+    var user_id = uuidv1();
+
     // store connection 
-    connections.set(netid, { socket: socket, room_id: -1 })
+    connections.set(netid, { socket: socket, room_id: -1, user_id: user_id})
 
     // send the user's profile to themselves
     // TODO: consider whether this is necessary!
     var profile = getStudent(netid);
     console.log("Sending profile: " + JSON.stringify(profile))
     socket.emit("profile", profile)
+    socket.emit("user_id", user_id)
+
+    console.log(`A user connected with netid ${netid}, user_id ${user_id}`)
     return false
 }
 
@@ -220,10 +227,8 @@ const onMessage = (io, socket, msg) => {
     // get which room that user was in
     var room_id = connections.get(netid).room_id
 
-    console.log(`Received message from ${netid} in room ${room_id}`);
-
-    // TODO: generate ID
-    msg.id = Math.random().toString(36).substr(2, 10)
+    msg.id = uuidv1();
+    console.log(`Received message ${msg.id} from ${netid} in room ${room_id}`);
 
     // save message in memory
     messages.get(room_id).push(msg)
