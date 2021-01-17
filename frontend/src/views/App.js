@@ -59,6 +59,10 @@ class App extends React.Component {
     this.state.socket.close()
   }
 
+  onRouteChanged() {
+    this.state.socket.close()
+  }
+
   componentDidUpdate() {
     // prevent user from accidentally refreshing while in a chat
     if (this.state.mode == APP_MODES.IN_ROOM && !this.state.otherDisconnected) {
@@ -87,15 +91,11 @@ class App extends React.Component {
     socket.on("match", data => {
       this.handleMatch(data)
     });
-    
+
     // detect incoming system event to handle disconnections
     socket.on('system', msg => {
       this.handleSystemMessage(msg)
     });
-  }
-
-  onRouteChanged() {
-    this.state.socket.close()
   }
 
   // begin searching for a match
@@ -145,7 +145,10 @@ class App extends React.Component {
     var mode = this.state.mode
     if (mode == APP_MODES.LANDING) {
       return (
-        <AppLanding handleClick={e => this.findMatch(e)} alreadyConnected={() => this.state.alreadyConnected} getProfile={() => this.state.profile}/>
+        <AppLanding
+          handleClick={e => this.findMatch(e)}
+          alreadyConnected={() => this.state.alreadyConnected}
+          getProfile={() => this.state.profile} />
       );
     } else if (mode == APP_MODES.SEARCHING) {
       return (
@@ -189,17 +192,6 @@ class App extends React.Component {
           <div className="position-relative">
             {/* shape Hero */}
             <section className="section section-lg section-shaped fullscreen">
-              <div className="shape shape-style-1 shape-default">
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-              </div>
               <Container className="py-lg-md d-flex justify-content-center mt-5">
 
                 {/* Show different card content based on state */}
