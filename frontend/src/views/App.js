@@ -30,7 +30,7 @@ import AppLanding from "views/AppComponents/AppLanding.js";
 import AppSearching from "views/AppComponents/AppSearching.js";
 import AppChatroom from "views/AppComponents/AppChatroom.js";
 
-import {APP_MODES, SYSTEM_MESSAGES} from "views/Constants.js"
+import {APP_MODES, SYSTEM_MESSAGES, MATCH_MODE} from "views/Constants.js"
 
 class App extends React.Component {
   state = {
@@ -145,6 +145,11 @@ class App extends React.Component {
     this.state.socket.emit("message", msg)
   }
 
+  cancelSearch() {
+    this.state.socket.emit("cancel-match")
+    this.setState({mode: APP_MODES.LANDING})
+  }
+
   // handles all possible operational messages
   handleSystemMessage(msg) {
     switch (msg) {
@@ -177,7 +182,12 @@ class App extends React.Component {
       );
     } else if (mode == APP_MODES.SEARCHING) {
       return (
-        <AppSearching />
+        <AppSearching
+          getProfile={() => this.state.profile}
+          matchMode={() => this.state.match_mode}
+          matchAnyone={() => this.setState({ match_mode: MATCH_MODE.ANYONE })}
+          cancelSearch={() => this.cancelSearch()}
+        />
       );
     } else if (mode == APP_MODES.IN_ROOM) {
       // https://www.freecodecamp.org/news/building-a-modern-chat-application-with-react-js-558896622194/

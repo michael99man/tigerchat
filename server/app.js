@@ -85,7 +85,6 @@ const onFindMatch = (io, socket, match_mode) => {
 
         if (isMatch(matchProfile, mp_b)) {
             // remove from queue
-            match_queue.delete(key)
             console.log(`Matching profiles ${JSON.stringify(matchProfile)} & ${JSON.stringify(mp_b)}`)
             matchUsers(io, netid, mp_b.netid)
             return
@@ -95,6 +94,15 @@ const onFindMatch = (io, socket, match_mode) => {
     // no match found
     console.log(`Put match profile into queue ${JSON.stringify(matchProfile)}`)
     match_queue.set(netid, matchProfile)
+}
+
+// remove user from queue (if they are currently matching)
+const cancelMatch = (netid) => {
+    // remove user if they are queued to match
+    if (match_queue.has(netid)) {
+        console.log(`Removing ${netid} from the match queue`);
+        match_queue.delete(netid)
+    }
 }
 
 // checks two matchProfiles and returns true iff criteria is met for both people
@@ -168,6 +176,10 @@ function matchUsers(io, netid_a, netid_b) {
     ROOM_ID_COUNTER += 1
 
     console.log(`Matched users ${netid_a} and ${netid_b}, sent to room ${room_id}`)
+
+    // remove from match queue
+    cancelMatch(netid_a)
+    cancelMatch(netid_b)
 }
 
 // returns whether or not to terminate connection
@@ -286,6 +298,10 @@ function registerSocketHooks(io) {
 
         socket.on('find-match', (match_mode) => {
             onFindMatch(io, socket, match_mode);
+        });
+
+        socket.on('cancel-match', () => {
+            cancelMatch(auth.getNetid(socket.request));
         });
 
         socket.on('elect-reveal', (doReveal) => {
