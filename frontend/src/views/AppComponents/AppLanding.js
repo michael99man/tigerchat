@@ -105,7 +105,7 @@ class AppLanding extends React.Component {
                 className="mt-4"
                 color="orange"
                 onClick={e => this.click(e)}
-                disabled={this.props.alreadyConnected}
+                disabled={this.props.alreadyConnected()}
               >
                 Find match
         </Button>
