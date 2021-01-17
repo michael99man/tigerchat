@@ -120,7 +120,7 @@ class AppChatroom extends React.Component {
         this.setState({ revealBannerOn: true, shownRevealBanner: true })
 
         // set timeout to eventually hide banner
-        setTimeout(() => this.setState({ revealBannerOn: false }), 5000)
+        setTimeout(() => this.setState({ revealBannerOn: false }), 10000)
       }
     });
 
@@ -249,15 +249,15 @@ class AppChatroom extends React.Component {
 
             <Row className="row-grid justify-content-center">
               <Button
-                className={"mt-4 " + (this.state.electedReveal ? "disabled" : "")}
+                className="mt-4"
                 color="orange"
                 onClick={e => {
                   e.preventDefault();
-                  this.setState({ electedReveal: true })
-                  // TODO: enable cancel reveal
-                  this.handleElectReveal(true);
+                  // flip the elect state
+                  this.handleElectReveal(!this.state.electedReveal);
+                  this.setState({ electedReveal: !this.state.electedReveal })
                 }} >
-                Reveal your identity
+                {this.state.electedReveal ? "Cancel Reveal" : "Reveal your identity"}
               </Button>
             </Row>
           </CardBody>
