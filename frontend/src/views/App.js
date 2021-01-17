@@ -88,6 +88,10 @@ class App extends React.Component {
       this.handleMatch(data)
     });
 
+    socket.on("reveal", other_netid => {
+      this.handleReveal(other_netid)
+    });
+
     // detect incoming system event to handle disconnections
     socket.on('system', msg => {
       this.handleSystemMessage(msg)
@@ -116,6 +120,24 @@ class App extends React.Component {
     // TODO: process data for their UID + profile
     console.log(`Matched with ${other}`)
     this.setState({ mode: APP_MODES.IN_ROOM })
+  }
+
+  // elects into the reveal mechanism or opting out
+  handleElectReveal(doReveal) {
+    if (doReveal) {
+      console.log(`Electing to reveal my identity`)
+    } else {
+      console.log("Electing to not reveal my identity")
+    }
+    this.state.socket.emit("elect-reveal", doReveal)
+  }
+  
+  // revealed and netid is known
+  handleReveal(other_netid) {
+    console.log(`Received identity! The stranger is ${other_netid}`)
+    this.setState({ revealed: true, other_netid })
+    
+    // TODO: add a banner!
   }
 
   sendMessage(msg) {
@@ -160,7 +182,15 @@ class App extends React.Component {
     } else if (mode == APP_MODES.IN_ROOM) {
       // https://www.freecodecamp.org/news/building-a-modern-chat-application-with-react-js-558896622194/
       return (
-        <AppChatroom messages={this.state.messages} sendMessage={(msg) => this.sendMessage(msg)} getUserId={() => this.state.user_id} otherDisconnected={() => this.state.otherDisconnected} />
+        <AppChatroom
+          messages={this.state.messages}
+          sendMessage={(msg) => this.sendMessage(msg)}
+          getUserId={() => this.state.user_id}
+          otherDisconnected={() => this.state.otherDisconnected}
+          handleElectReveal={(doReveal) => this.handleElectReveal(doReveal)}
+          isRevealed={() => this.state.revealed}
+          otherNetid={() => this.state.revealed ? this.state.other_netid : "Stranger"}
+        />
       )
     }
     return (

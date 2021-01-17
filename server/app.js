@@ -41,7 +41,7 @@ const messages = new Map()
 // mapping of netid -> {socket, room_id}
 const connections = new Map()
 
-// mapping of room_id -> pair of users
+// mapping of room_id -> pair of users and revealed set
 const rooms = new Map()
 
 // queue of people waiting to be connected
@@ -164,7 +164,7 @@ function matchUsers(io, netid_a, netid_b) {
     messages.set(room_id, [])
 
     io.to(room_id).emit("match")
-    rooms.set(room_id, { netid_a: netid_a, netid_b: netid_b })
+    rooms.set(room_id, { netid_a: netid_a, netid_b: netid_b, revealed: new Set()})
     ROOM_ID_COUNTER += 1
 
     console.log(`Matched users ${netid_a} and ${netid_b}, sent to room ${room_id}`)
@@ -237,6 +237,36 @@ const onMessage = (io, socket, msg) => {
     io.to(room_id).emit('message', msg);
 }
 
+// handle revealing (either add or remove from reveal list)
+const onElectReveal = (io, socket, doReveal) => {
+    var netid = auth.getNetid(socket.request)
+
+    // TODO: check if valid
+    // get which room that user was in
+    var room_id = connections.get(netid).room_id 
+
+    var room = rooms.get(room_id)
+
+    if (doReveal) {
+        room.revealed.add(netid)
+        console.log(`${netid} has elected to reveal in room ${room_id}`);
+    } else {
+        room.revealed.delete(netid)
+        console.log(`${netid} has no longer elected to reveal in room ${room_id}`);
+    }
+
+    // check if there both have elected to reveal
+    if (room.revealed.size == 2) {
+        // reveal to both parties
+        var socketA = connections.get(room.netid_a).socket
+        var socketB = connections.get(room.netid_b).socket
+
+        // send net_ids over
+        socketA.emit('reveal', room.netid_b)
+        socketB.emit('reveal', room.netid_a)
+    }
+}
+
 /*
  * Define core socket hooks
  */
@@ -256,6 +286,10 @@ function registerSocketHooks(io) {
 
         socket.on('find-match', (match_mode) => {
             onFindMatch(io, socket, match_mode);
+        });
+
+        socket.on('elect-reveal', (doReveal) => {
+            onElectReveal(io, socket, doReveal);
         });
 
         socket.on('message', (msg) => {

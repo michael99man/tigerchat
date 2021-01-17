@@ -7,10 +7,23 @@ import {
   Input,
   Row,
   Alert,
+  Button,
 } from "reactstrap";
 
 class AppChatroom extends React.Component {
-  state = { parentState: this.props.parentState, msgInput: "", otherDisconnected: this.props.otherDisconnected, dcStartTime: -1, secondsTil: -1 };
+  state = {
+    parentState: this.props.parentState,
+    msgInput: "",
+    otherDisconnected: this.props.otherDisconnected,
+    electedReveal: false, 
+
+    // reveal banner
+    revealBannerOn: false,
+    shownRevealBanner: false,
+    // DC handlers
+    dcStartTime: -1,
+    secondsTil: -1
+  };
 
   constructor(props) {
     super(props)
@@ -98,11 +111,36 @@ class AppChatroom extends React.Component {
     }
   }
 
+
+  RevealedBanner = () => {
+    // run on state change
+    useEffect(() => {
+      if (this.props.isRevealed() && !this.state.shownRevealBanner) {
+        // show reveal banner
+        this.setState({ revealBannerOn: true, shownRevealBanner: true })
+
+        // set timeout to eventually hide banner
+        setTimeout(() => this.setState({ revealBannerOn: false }), 5000)
+      }
+    });
+
+    if (this.state.revealBannerOn) {
+      // TODO: animations to show and hide
+      return (<>
+        <Alert color="success">
+          <strong>You've both revealed!</strong> You're currently talking to {this.props.otherNetid()}.
+      </Alert>
+      </>);
+    }
+    return (null)
+  }
+
   render() {
     return (
       <>
         <Card className="shadow border-0 app-card">
           <this.OtherDisconnectedBanner />
+          <this.RevealedBanner />
           <CardBody className="py-md align-items-center">
             <Row className="row-grid justify-content-center align-items-center">
               <h6 className="text-orange text-uppercase">
@@ -125,7 +163,7 @@ class AppChatroom extends React.Component {
                       ) : (
                           <li className="other-msg" key={data.id}>
                             <div className="msg">
-                              <p>Stranger</p>
+                              <p>{this.props.otherNetid()}</p>
                               <div className="message"> {data.text} </div>
                             </div>
                           </li>
@@ -162,6 +200,19 @@ class AppChatroom extends React.Component {
               value={this.state.msgInput}
             />
 
+            <Row className="row-grid justify-content-center">
+              <Button
+                className={"mt-4 " + (this.state.electedReveal ? "disabled" : "")}
+                color="orange"
+                onClick={e => {
+                  e.preventDefault();
+                  this.setState({ electedReveal: true })
+                  // TODO: enable cancel reveal
+                  this.props.handleElectReveal(true);
+                }} >
+                Reveal your identity
+              </Button>
+            </Row>
           </CardBody>
         </Card>
       </>);
