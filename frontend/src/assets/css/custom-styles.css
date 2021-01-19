@@ -2,6 +2,10 @@
     --primary: #ff8f00
 }
 
+.faq {
+  font-size: 75% !important;
+}
+
 .fullscreen {
     height: 100vh;
     overflow: visible;

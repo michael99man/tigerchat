@@ -147,7 +147,7 @@ class Index extends React.Component {
                       platform where you can meet peers, make new friends, and chat about the going-on's in
                       a safe and secure way.
                   </p>
-                    <p class="authors">Created by @glhong and @mman</p>
+                    <p class="authors">Created by ...</p>
                   </Col>
                 </Row>
                 {/* SVG separator */}
@@ -266,11 +266,6 @@ class Index extends React.Component {
                       </div>*/}
                       <div className="pl-4">
                         <h3 className="sub">FREQUENTLY ASKED QUESTIONS</h3>
-                        <p>
-                          We're updating anon chat to a more intuitive and
-                          cleaner platform. With users first in mind, we're designing
-                          to include gifs, stickers, and games for community members.
-                      </p>
                       </div>
                     </div>
                   </Col>
@@ -287,11 +282,12 @@ class Index extends React.Component {
                           </div>
                           <div className="pl-4">
                             <h5 className="title text-orange">
-                              Question 1
+                              Am I 100% anonymous?
                           </h5>
-                            <p>
-                              No messy ads on the side. Just chat & meet
-                              someone new!
+                            <p className = "faq">
+                              Yes! Everyone who uses our platform remains completely anonymous
+                              to the development team and their fellow users. If you decide to reveal your identity, then
+                              your identity will be known only to the user(s) you're chatting with. 
                           </p>
                           </div>
                         </div>
@@ -309,57 +305,13 @@ class Index extends React.Component {
                           </div>
                           <div className="pl-4">
                             <h5 className="title text-orange">
-                              Question 2
+                              Is there any data collected on users?
                           </h5>
-                            <p>
-                              No messy ads on the side. Just chat & meet
-                              someone new!
-                          </p>
-                          </div>
-                        </div>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                </Row>
-                <Row className="row-grid align-items-center">
-                  <Col className="order-lg-2 ml-lg-auto" md="6">
-                    <Card className="shadow shadow-lg--hover">
-                      <CardBody>
-                        <div className="d-flex px-3">
-                          <div>
-                            <div className="icon icon-shape bg-gradient-orange rounded-circle text-white">
-                              <i className="fa fa-question" />
-                            </div>
-                          </div>
-                          <div className="pl-4">
-                            <h5 className="title text-orange">
-                              Question 1
-                          </h5>
-                            <p>
-                              No messy ads on the side. Just chat & meet
-                              someone new!
-                          </p>
-                          </div>
-                        </div>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                  <Col className="order-lg-2 ml-lg-auto" md="6">
-                    <Card className="shadow shadow-lg--hover">
-                      <CardBody>
-                        <div className="d-flex px-3">
-                          <div>
-                            <div className="icon icon-shape bg-gradient-orange rounded-circle text-white">
-                              <i className="fa fa-question" />
-                            </div>
-                          </div>
-                          <div className="pl-4">
-                            <h5 className="title text-orange">
-                              Question 2
-                          </h5>
-                            <p>
-                              No messy ads on the side. Just chat & meet
-                              someone new!
+                            <p className = "faq">
+                              Again, your identity remains completely anonymous to us.
+                              We wipe conversations, unless a user reports a user, in 
+                              which case we will analyze the conversation to determine
+                              whether it is a violation of community rules. 
                           </p>
                           </div>
                         </div>
@@ -379,11 +331,15 @@ class Index extends React.Component {
                           </div>
                           <div className="pl-4">
                             <h5 className="title text-orange">
-                              Question 1
+                              How do I get matched to someone?
                           </h5>
-                            <p>
-                              No messy ads on the side. Just chat & meet
-                              someone new!
+                            <p className = "faq">
+                              There are three ways to match: 1) match randomly, 
+                              2) match by class year, 3) match by major, or 
+                              4) match by residential college. If we cannot
+                              find a match based on the  students who are using
+                              the platform live from 2, 3, or 4, we will ask if you 
+                              are willing to match randomly.
                           </p>
                           </div>
                         </div>
@@ -401,11 +357,66 @@ class Index extends React.Component {
                           </div>
                           <div className="pl-4">
                             <h5 className="title text-orange">
-                              Question 2
+                              What if there's no one to match with?
                           </h5>
-                            <p>
-                              No messy ads on the side. Just chat & meet
-                              someone new!
+                            <p className = "faq">
+                              Since we're using a still relatively small population,
+                              at times when we have few live users, it might be
+                              difficult for us to find you a match. However, we are 
+                              planning on lauching group chat features to facilitate 
+                              chats at these times.
+                          </p>
+                          </div>
+                        </div>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                </Row>
+                <Row className="row-grid align-items-center">
+                  <Col className="order-lg-2 ml-lg-auto" md="6">
+                    <Card className="shadow shadow-lg--hover">
+                      <CardBody>
+                        <div className="d-flex px-3">
+                          <div>
+                            <div className="icon icon-shape bg-gradient-orange rounded-circle text-white">
+                              <i className="fa fa-question" />
+                            </div>
+                          </div>
+                          <div className="pl-4">
+                            <h5 className="title text-orange">
+                              How do I know if the people I'm chatting with are only Princeton students?
+                          </h5>
+                            <p className = "faq">
+                              We use CAS authentication. Therefore, it is impossible for users to 
+                              use the platform without being a current Princeton student. We plan 
+                              on launching the platform later to other schools, so there may be a 
+                              chance that you're able to match with students outside of your college :)
+                          </p>
+                          </div>
+                        </div>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                  <Col className="order-lg-2 ml-lg-auto" md="6">
+                    <Card className="shadow shadow-lg--hover">
+                      <CardBody>
+                        <div className="d-flex px-3">
+                          <div>
+                            <div className="icon icon-shape bg-gradient-orange rounded-circle text-white">
+                              <i className="fa fa-question" />
+                            </div>
+                          </div>
+                          <div className="pl-4">
+                            <h5 className="title text-orange">
+                              What happens in the reporting process?
+                          </h5>
+                            <p className = "faq">
+                              If a user is violating our community guidelines, the other
+                              user can use the "Report" button to report a violation. 
+                              We will then investigate the conversation and determine
+                              if it is a true violation. If so, the violator
+                                will receive a warning on first offense; afterwards, we
+                              reserve the right to remove them from the platform.
                           </p>
                           </div>
                         </div>
