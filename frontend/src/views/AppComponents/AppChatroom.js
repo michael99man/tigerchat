@@ -10,6 +10,10 @@ import {
   Button,
 } from "reactstrap";
 
+import { Dot } from 'react-animated-dots';
+
+const TYPING_TIMEOUT = 3000;
+
 class AppChatroom extends React.Component {
   state = {
     messages: [],
@@ -25,7 +29,12 @@ class AppChatroom extends React.Component {
     shownRevealBanner: false,
     // DC handlers
     dcStartTime: -1,
-    secondsTil: -1
+    secondsTil: -1,
+
+    iAmTyping: false,
+
+    // display is typing message
+    otherIsTyping: false,
   };
 
   constructor(props) {
@@ -41,6 +50,15 @@ class AppChatroom extends React.Component {
       console.log(`Received message ${msg}`)
       // append to messages list
       this.setState({ messages: [...this.state.messages, { id: msg.id, sender_uid: msg.sender_uid, text: msg.text }] })
+    });
+
+    // detect when the other person is typing
+    this.props.socket.on('is-typing', (data) => {
+      if (data.user_id !== this.props.getUserId()){
+        // ignore info about ourselves
+        this.setState({ otherIsTyping: data.is_typing })
+        console.log(`Other person is typing (${data.is_typing})`)
+      }
     });
   }
 
@@ -170,14 +188,39 @@ class AppChatroom extends React.Component {
     });
   }
 
+  stoppedTyping = () => {
+    this.setState({ iAmTyping: false });
+    this.props.socket.emit("im-typing", false)
+  }
+
   // handle submission of text
   onKeyDown(event) {
     if (event.key === 'Enter' && this.state.msgInput !== "") {
       console.log(this.state)
-      // emit to 
+      // emit to server
       var message = { sender_uid: this.props.getUserId(), text: this.state.msgInput }
       this.setState({ msgInput: "" })
       this.sendMessage(message)
+
+      // cancel typing timeout and trigger stoppedTyping
+      if (this.typingTimeout) {
+        clearTimeout(this.typingTimeout);
+      }
+      this.stoppedTyping()
+    } else {
+      
+      // if not currently typing, set to true
+      if (!this.state.iAmTyping) {
+        this.setState({ iAmTyping: true });
+        // broadcast typing message
+        this.props.socket.emit("im-typing", true)
+      }
+
+      // restart timeout function
+      if (this.typingTimeout) {
+        clearTimeout(this.typingTimeout);
+      }
+      this.typingTimeout = setTimeout(this.stoppedTyping, TYPING_TIMEOUT)
     }
   }
 
@@ -217,6 +260,18 @@ class AppChatroom extends React.Component {
                         )}
                     </div>
                   ))}
+                
+                {this.state.otherIsTyping ? ( 
+                  <div>
+                      <li className="other-msg typing-msg">
+                        <div className="msg">
+                          <p>{this.state.otherNetid === null ? "Stranger" : this.state.otherNetid}</p>
+                          <div className="message"> is typing... </div>
+                        </div>
+                      </li>
+                  </div>
+                ): (null)}
+                        
                 {/* allows us to scroll down */}
                 <div style={{ float: "left", clear: "both" }}
                   ref={(el) => { this.messagesEnd = el; }}>

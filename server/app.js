@@ -45,7 +45,7 @@ const connections = new Map()
 const rooms = new Map()
 
 // queue of people waiting to be connected
-// mapping of netid -> {netid, match_mode, profile}
+// mapping of netid -> {netid, match_mode, profile, user_id}
 var match_queue = new Map()
 
 /*
@@ -238,15 +238,34 @@ const onMessage = (io, socket, msg) => {
     // TODO: check if valid
     // get which room that user was in
     var room_id = connections.get(netid).room_id
+    var user_id = connections.get(netid).user_id
 
     msg.id = uuidv1();
     console.log(`Received message ${msg.id} from ${netid} in room ${room_id}`);
+
+    // check that user_ids match
+    if (user_id !== msg.user_id) {
+        console.warn(`User supplied user_id invalid: ${user_id}, ${msg.user_id}`)
+    }
 
     // save message in memory
     messages.get(room_id).push(msg)
 
     // emits to all connected sockets in that room
     io.to(room_id).emit('message', msg);
+}
+
+const onImTyping = (io, socket, is_typing) => {
+    // broadcast to the room 
+    var netid = auth.getNetid(socket.request)
+
+    // TODO: check if valid
+    // get which room that user was in
+    var room_id = connections.get(netid).room_id
+    var user_id = connections.get(netid).user_id
+
+    // emits to all connected sockets in that room
+    io.to(room_id).emit('is-typing', {user_id, is_typing});
 }
 
 // handle revealing (either add or remove from reveal list)
@@ -310,6 +329,10 @@ function registerSocketHooks(io) {
 
         socket.on('message', (msg) => {
             onMessage(io, socket, msg)
+        });
+
+        socket.on('im-typing', (is_typing) => {
+            onImTyping(io, socket, is_typing);
         });
     }).bind(io));
 }
