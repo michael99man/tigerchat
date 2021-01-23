@@ -49,6 +49,7 @@ class AppChatroom extends React.Component {
     this.messagesEnd.scrollIntoView({ behavior: "smooth" });
   }
 
+
   /*
    * OTHER DISCONNECTED LOGIC
    */
@@ -150,6 +151,14 @@ class AppChatroom extends React.Component {
     console.log(`Received identity! The stranger is ${otherNetid}`)
     this.setState({ revealed: true, otherNetid })
   }
+
+  /*
+   * LEAVE BUTTON
+   */
+   leavechat(event) {
+    this.props.socket.disconnect() // close socket connection to server
+    return res.redirect('3000') // redirect
+   }
 
   /*
    * MESSAGING LOGIC
