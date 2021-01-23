@@ -84,7 +84,7 @@ class TCNavbar extends React.Component {
                     </Col>*/}
                   </Row>
                 </div>
-                <Nav className="navbar-nav-hover align-items-lg-center" navbar>
+                <Nav className="mr-auto">
                   <Link
                     to="how-section"
                     spy={true}
@@ -113,7 +113,7 @@ class TCNavbar extends React.Component {
                   > <span className="nav-link-inner--text">FAQ</span></Link>
                 </Nav>
                 <Nav className="align-items-lg-center ml-lg-auto" navbar>
-                  {/*
+                 { /* 
                   <NavItem>
                     <NavLink
                       className="nav-link-icon"

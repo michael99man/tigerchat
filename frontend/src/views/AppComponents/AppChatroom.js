@@ -175,7 +175,7 @@ class AppChatroom extends React.Component {
    */
    leavechat(event) {
     this.props.socket.disconnect() // close socket connection to server
-    return res.redirect('3000') // redirect
+    //return res.redirect('3000') // redirect
    }
 
   /*

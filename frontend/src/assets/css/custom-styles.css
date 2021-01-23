@@ -86,6 +86,11 @@
   color: #B2AFAE !important; 
 }
 
+.nav-link-inner--text:hover {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
 .collapse {
   background-color: #ffffff !important;
 }
