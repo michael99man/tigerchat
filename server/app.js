@@ -62,7 +62,7 @@ const onFindMatch = (io, socket, match_mode) => {
         console.log(`Dequeued match profile ${JSON.stringify(match_queue.get(netid))}`)
         match_queue.delete(netid)
     }
-        
+
     // represents user and what they are matching for 
     var matchProfile = {
         netid: netid,
@@ -77,9 +77,9 @@ const onFindMatch = (io, socket, match_mode) => {
 
     // on a new init match, scan through the current queue and check for match criteria
     // linear scan, probably fine
-    
-    const keys = Array.from( match_queue.keys() );
-    for (var i = 0; i < keys.length; i++){
+
+    const keys = Array.from(match_queue.keys());
+    for (var i = 0; i < keys.length; i++) {
         const key = keys[i]
         const mp_b = match_queue.get(key)
 
@@ -90,7 +90,7 @@ const onFindMatch = (io, socket, match_mode) => {
             return
         }
     }
-     
+
     // no match found
     console.log(`Put match profile into queue ${JSON.stringify(matchProfile)}`)
     match_queue.set(netid, matchProfile)
@@ -163,7 +163,7 @@ function matchUsers(io, netid_a, netid_b) {
 
     // TODO: make a better room counter
     room_id = ROOM_ID_COUNTER
-    
+
     data_a.socket.join(room_id)
     data_b.socket.join(room_id)
     data_a.room_id = room_id
@@ -172,7 +172,7 @@ function matchUsers(io, netid_a, netid_b) {
     messages.set(room_id, [])
 
     io.to(room_id).emit("match")
-    rooms.set(room_id, { netid_a: netid_a, netid_b: netid_b, revealed: new Set()})
+    rooms.set(room_id, { netid_a: netid_a, netid_b: netid_b, revealed: new Set() })
     ROOM_ID_COUNTER += 1
 
     console.log(`Matched users ${netid_a} and ${netid_b}, sent to room ${room_id}`)
@@ -201,7 +201,7 @@ const onSocketConnect = (io, socket, netid) => {
     var user_id = uuidv1();
 
     // store connection 
-    connections.set(netid, { socket: socket, room_id: -1, user_id: user_id})
+    connections.set(netid, { socket: socket, room_id: -1, user_id: user_id })
 
     // send the user's profile to themselves
     // TODO: consider whether this is necessary!
@@ -220,15 +220,19 @@ const onSocketDisconnect = (io, socket, netid) => {
     if (match_queue.has(netid)) {
         match_queue.delete(netid)
     }
-
-    // if user is in room, broadcast to partner that they have disconnected
-    var room_id = connections.get(netid).room_id
-    if (room_id !== -1) {
-        console.log(`Broadcasting to room ${room_id} that ${netid} has disconnected`)
-        io.to(room_id).emit('system', SYSTEM_MESSAGES.OTHER_DISCONNECTED)
+    if (connections.has(netid)) {
+        var conn = connections.get(netid)
+        // if user is in room, broadcast to partner that they have disconnected
+        var room_id = conn.room_id
+        if (room_id !== -1) {
+            console.log(`Broadcasting to room ${room_id} that ${netid} has disconnected`)
+            io.to(room_id).emit('system', SYSTEM_MESSAGES.OTHER_DISCONNECTED)
+        }
+        connections.delete(netid)
     }
 
-    connections.delete(netid)
+
+
     console.log(`User ${netid} has disconnected`);
 }
 
@@ -265,7 +269,7 @@ const onImTyping = (io, socket, is_typing) => {
     var user_id = connections.get(netid).user_id
 
     // emits to all connected sockets in that room
-    io.to(room_id).emit('is-typing', {user_id, is_typing});
+    io.to(room_id).emit('is-typing', { user_id, is_typing });
 }
 
 // handle revealing (either add or remove from reveal list)
@@ -274,7 +278,7 @@ const onElectReveal = (io, socket, doReveal) => {
 
     // TODO: check if valid
     // get which room that user was in
-    var room_id = connections.get(netid).room_id 
+    var room_id = connections.get(netid).room_id
 
     var room = rooms.get(room_id)
 
