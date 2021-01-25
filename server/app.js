@@ -302,6 +302,7 @@ const onElectReveal = (io, socket, doReveal) => {
     }
 }
 
+
 /*
  * Define core socket hooks
  */

@@ -67,6 +67,7 @@ class AppChatroom extends React.Component {
     this.messagesEnd.scrollIntoView({ behavior: "smooth" });
   }
 
+
   /*
    * OTHER DISCONNECTED LOGIC
    */
@@ -170,6 +171,17 @@ class AppChatroom extends React.Component {
   }
 
   /*
+   * LEAVE BUTTON
+   */
+   leaveChat = () => {
+    this.props.socket.disconnect(); // close socket connection to server
+    socket.on('disconnect', () => {
+      io.emit('disconnect', {})
+    })("User has left the chat.");
+    //this.setState(APP_MODES.LANDING
+   }
+
+  /*
    * MESSAGING LOGIC
    */
   sendMessage(msg) {
@@ -231,6 +243,15 @@ class AppChatroom extends React.Component {
           <this.OtherDisconnectedBanner />
           <this.RevealedBanner />
           <CardBody className="py-md align-items-center">
+            <Row className="row-grid justify-content-center">
+                <Button
+                  className="mt-4"
+                  color="gray" 
+                  onclick ={e => this.leaveChat()}
+                  href={process.env.REACT_APP_API_ENDPOINT + "/login"} >
+                 Leave conversation </Button>
+              </Row>
+
             <Row className="row-grid justify-content-center align-items-center">
               <h6 className="text-orange text-uppercase">
                 YOU'RE CHATTING!
