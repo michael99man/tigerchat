@@ -32,8 +32,8 @@ import {
   NavbarBrand,
   Navbar,
   NavItem,
-  NavLink,
   Nav,
+  NavLink,
   Container,
   Row,
   Col,
@@ -58,10 +58,15 @@ class TCNavbar extends React.Component {
           >
             <Container>
               <NavbarBrand className="mr-lg-5" to="/" tag={Link}>
+                <NavLink 
+                activeClassName="active"
+                href="http://localhost:3000/">
                 <img
                   alt="..."
-                  src={require("assets/img/brand/tigerchat.png")}
+                  src={require("assets/img/brand/tigerchat.png")
+                  }
                 />
+                </NavLink>
               </NavbarBrand>
               <button className="navbar-toggler" id="navbar_global">
                 <span className="navbar-toggler-icon" />
