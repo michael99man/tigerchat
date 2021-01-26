@@ -4,9 +4,9 @@
   "description": "An anonymous messaging service for Princeton students to connect.",
   "main": "index.js",
   "scripts": {
-    "dev": "REACT_SERVER=http://localhost:3000 node server.js",
+    "dev": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prod": "REACT_SERVER=http://tigerchat.io:3000 node server.js"
+    "prod": "NODE_ENV=production node server.js"
   },
   "author": "Michael Man",
   "contributers": [

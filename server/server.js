@@ -11,7 +11,8 @@
 
 const app = require('express')();
 const server = require("http").createServer(app)
-const REACT_SERVER = process.env.REACT_SERVER
+require('dotenv').config();
+const REACT_SERVER = process.env.NODE_ENV === "production" ? process.env.PROD_SERVER : process.env.DEV_SERVER
 const auth = require("./auth")
 const { registerSocketHooks } = require("./app")
 
