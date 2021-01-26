@@ -175,9 +175,10 @@ class AppChatroom extends React.Component {
    */
    leaveChat = () => {
     this.props.socket.disconnect(); // close socket connection to server
-    socket.on('disconnect', () => {
-      io.emit('disconnect', {})
-    })("User has left the chat.");
+     this.props.socket.on('disconnect', () => {
+       console.log("User has disconnected")
+     });
+     // TODO: FIXME!!!!!
     //this.setState(APP_MODES.LANDING
    }
 
