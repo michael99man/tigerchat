@@ -3,25 +3,14 @@ import React from "react";
 
 // reactstrap components
 import {
-  Badge,
   Button,
   Card,
   CardBody,
-  CardImg,
-  FormGroup,
-  Form,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
-  Container,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
   Dropdown,
-  UncontrolledDropdown,
   Row,
-  Col,
   Alert,
 } from "reactstrap";
 import ButtonDropdown from "reactstrap/lib/ButtonDropdown";

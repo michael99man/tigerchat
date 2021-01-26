@@ -17,18 +17,12 @@
 */
 import React from "react";
 //import { Link } from "react-router-dom";
-import { Link, Scroll } from 'react-scroll'
+import { Link } from 'react-scroll'
 // JavaScript plugin that hides or shows a component based on your scroll
 import Headroom from "headroom.js";
 // reactstrap components
 import {
   Button,
-  UncontrolledCollapse,
-  DropdownMenu,
-  DropdownItem,
-  DropdownToggle,
-  UncontrolledDropdown,
-  Media,
   NavbarBrand,
   Navbar,
   NavItem,

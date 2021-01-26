@@ -10,7 +10,6 @@ import {
 
 import { Dot } from 'react-animated-dots';
 import { MATCH_MODE } from 'views/Constants.js';
-import { isThisTypeNode } from "typescript";
 
 class AppSearching extends React.Component {
 

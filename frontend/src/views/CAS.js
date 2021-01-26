@@ -19,20 +19,13 @@ import React from "react";
 
 // reactstrap components
 import {
-  Badge,
-  Button,
   Card,
   CardBody,
-  CardImg,
   FormGroup,
   Form,
   Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
   Container,
   Row,
-  Col
 } from "reactstrap";
 
 // core components

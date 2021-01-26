@@ -10,7 +10,7 @@ import {
   Button,
 } from "reactstrap";
 
-import { Dot } from 'react-animated-dots';
+// import { Dot } from 'react-animated-dots';
 
 const TYPING_TIMEOUT = 3000;
 
@@ -99,7 +99,7 @@ class AppChatroom extends React.Component {
 
           console.log(this.state)
           // sets dc time to second epoch
-          this.state.dcStartTime = Math.round(new Date().getTime() / 1000);
+          this.setState({ dcStartTime: Math.round(new Date().getTime() / 1000) });
 
           console.log("Disconnected at: " + this.state.dcStartTime);
 
@@ -115,7 +115,7 @@ class AppChatroom extends React.Component {
       }
     });
 
-    if (this.state.dcStartTime == -1) {
+    if (this.state.dcStartTime === -1) {
       // no other-dc banner
       return (null);
     } else {

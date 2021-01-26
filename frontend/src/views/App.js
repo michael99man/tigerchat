@@ -65,7 +65,7 @@ class App extends React.Component {
 
   componentDidUpdate() {
     // prevent user from accidentally refreshing while in a chat
-    if (this.state.mode == APP_MODES.IN_ROOM && !this.state.otherDisconnected) {
+    if (this.state.mode === APP_MODES.IN_ROOM && !this.state.otherDisconnected) {
       window.onbeforeunload = () => true
     } else {
       window.onbeforeunload = undefined
@@ -143,14 +143,14 @@ class App extends React.Component {
 
   AppCard() {
     var mode = this.state.mode
-    if (mode == APP_MODES.LANDING) {
+    if (mode === APP_MODES.LANDING) {
       return (
         <AppLanding
           handleClick={e => this.findMatch(e)}
           alreadyConnected={() => this.state.alreadyConnected}
           getProfile={() => this.state.profile} />
       );
-    } else if (mode == APP_MODES.SEARCHING) {
+    } else if (mode === APP_MODES.SEARCHING) {
       return (
         <AppSearching
           getProfile={() => this.state.profile}
@@ -159,7 +159,7 @@ class App extends React.Component {
           cancelSearch={() => this.cancelSearch()}
         />
       );
-    } else if (mode == APP_MODES.IN_ROOM) {
+    } else if (mode === APP_MODES.IN_ROOM) {
       // https://www.freecodecamp.org/news/building-a-modern-chat-application-with-react-js-558896622194/
       return (
         <AppChatroom
@@ -185,7 +185,7 @@ class App extends React.Component {
       <>
         <TCNavbar />
         <Prompt
-          when={this.state.mode == APP_MODES.IN_ROOM && !this.state.otherDisconnected}
+          when={this.state.mode === APP_MODES.IN_ROOM && !this.state.otherDisconnected}
           message="You're currently chatting with someone. Are you sure you want to leave?"
         />
         <main ref="main">

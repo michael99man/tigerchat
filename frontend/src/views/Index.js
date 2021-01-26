@@ -18,16 +18,8 @@
 import React from "react";
 // reactstrap components
 import {
-  Badge,
-  Button,
   Card,
   CardBody,
-  CardImg,
-  FormGroup,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
   Container,
   Row,
   Col
@@ -35,11 +27,9 @@ import {
 
 // core components
 import TCNavbar from "components/Navbars/TCNavbar.js";
-import SimpleFooter from "components/Footers/SimpleFooter.js";
-
 
 // nodejs library that concatenates classes
-import classnames from "classnames";
+// import classnames from "classnames";
 
 // index page sections
 import TCHero from "./IndexSections/TCHero.js";
