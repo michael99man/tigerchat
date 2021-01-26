@@ -9,7 +9,7 @@
   "homepage": "https://tigerchat.io",
   "scripts": {
     "start": "REACT_APP_API_ENDPOINT=http://localhost:1738 react-scripts start",
-    "start-windows": "setx REACT_APP_API_ENDPOINT 'http://localhost:1738' react-scripts start",	
+    "start-clean": "react-scripts start",
     "aws-dev": "REACT_APP_API_ENDPOINT=http://tigerchat.io:1738 react-scripts start",
     "build": "react-scripts build && gulp licenses",
     "test": "react-scripts test",
