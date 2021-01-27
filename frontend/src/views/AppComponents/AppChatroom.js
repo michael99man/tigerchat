@@ -53,14 +53,12 @@ class AppChatroom extends React.Component {
 
       // if sender is other person, changes favicon to notif
       if (msg.sender_uid !== this.props.getUserId()) {
-        document.getElementById('tabicon').href = "notif-favicon.ico";
-        // document.getElementById('tabicon').href = "favicon-notif/favicon.ico";
+        document.getElementById('tabicon').href = "favicon-notif/favicon.ico";
       }
 
       // changes favicon back to original
       function switchBack() {
-        document.getElementById('tabicon').href = "favicon.ico";
-        // document.getElementById('tabicon').href = "favicon/favicon.ico";
+        document.getElementById('tabicon').href = "favicon/favicon.ico";
        }
 
       // after clicking anywhere on screen, change favicon back
