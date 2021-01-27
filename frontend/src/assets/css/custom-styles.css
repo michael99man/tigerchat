@@ -8,7 +8,7 @@
 
 .fullscreen {
     height: 100vh;
-    overflow: visible;
+    overflow: scroll;
 }
 
 .section {
@@ -74,7 +74,12 @@
     background-color: #ffffff !important; }
 
 .app-card {
-    min-width: 500px !important
+    min-width: 600px !important; 
+    max-width: 600px;
+  }
+
+.app-card {
+  max-height: 700px;
 }
 
 .nav-link-icon {
@@ -138,8 +143,8 @@
 
         .chatWindow {
           display: grid;
-          height: 600px;
-          background: rgb(233, 229, 229);
+          height: 400px;
+          background: rgb(245, 240, 240);         
           border-radius: 5px;
           overflow:scroll;
           grid-column-start: 2;
@@ -154,13 +159,13 @@
         .chat {
           list-style: none;
           background: none;
-          margin: 0;
+          margin: 5px;
           padding: 0 0 50px 0;
           overflow: scroll;
           scroll-behavior: smooth;
         }
         .chat li {
-          padding: 0.5rem;
+          padding: 0.15rem;
           overflow: hidden;
           display: flex;
         }
@@ -195,7 +200,7 @@
             -1px 0px 0px #e5e5e5, -2px 0px 0px #e5e5e5, -3px 0px 0px #e5e5e5,
             -4px 0px 0px #e5e5e5, -5px 0px 0px #e5e5e5, -6px 0px 0px #e5e5e5,
             -7px 0px 0px #e5e5e5;
-          box-shadow: inset 20px 0px 0px #e5e5e5, inset -20px 0px 0px #e5e5e5,
+            box-shadow: inset 20px 0px 0px #e5e5e5, inset -20px 0px 0px #e5e5e5,
             inset 0px -2px 0px #d7d7d7;
           line-height: 38px;
           margin-top: 5px;
@@ -211,6 +216,8 @@
           border-top-left-radius: 0px;
           box-shadow: -1px 2px 0px #d4d4d4;
         }
+
+        
         .other:before {
           content: "";
           position: relative;
@@ -226,23 +233,31 @@
         .self-msg {
           justify-content: flex-end;
           align-items: flex-end;
+          
         }
+
         .self-msg .msg {
+          background: #ffcc99;
+          color: rgba(0, 0, 0, 0.7);
           order: 1;
           border-bottom-right-radius: 0px;
-          box-shadow: 1px 2px 0px #d4d4d4;
+
         }
       
         .msg {
           background: white;
-          min-width: fit-content;
+          max-width: 75%;
+          font-size: 0.8rem;
+          color:rgba(0, 0, 0, 0.7);
           padding: 10px;
           border-radius: 10px;
-          box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.07);
+          
+
+                    
         }
         .msg p {
-          font-size: 0.8rem;
-          margin: 0 0 0.2rem 0;
+          font-size: 0.65rem;
+          margin: 0 0 0rem 0;
           color: rgb(81, 84, 255);
         }
         .msg img {
