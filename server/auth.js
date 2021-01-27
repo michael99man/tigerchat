@@ -18,7 +18,7 @@ const session = require("express-session")({
     saveUnitialized: false,
     store: sessionStore,
 })
-const REACT_SERVER = process.env.REACT_SERVER
+const REACT_SERVER = process.env.NODE_ENV === "production" ? process.env.PROD_SERVER : process.env.DEV_SERVER
 
 // returns true if netid already has an associated session
 async function hasSessionSet(netid) {
