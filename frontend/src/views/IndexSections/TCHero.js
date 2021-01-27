@@ -51,7 +51,7 @@ class TCHero extends React.Component {
                       style={{ width: "350px" }}
                     />
                     <p className="lead text-white typewriter">
-                      A new way to anonymously connect 
+                      A new way to anonymously connect
                     </p>
                     <div className="btn-wrapper mt-5">
                       <Button
