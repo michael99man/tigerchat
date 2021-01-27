@@ -56,11 +56,12 @@ class TCNavbar extends React.Component {
             expand="lg"
             id="navbar-main"
           >
+            
             <Container>
-              <NavbarBrand className="mr-lg-5" to="/" tag={Link}>
+              <NavbarBrand className="mr-lg-5">
                 <NavLink 
                 activeClassName="active"
-                href="http://localhost:3000/">
+                href="/">
                 <img
                   alt="..."
                   src={require("assets/img/brand/tigerchat.png")
@@ -74,7 +75,8 @@ class TCNavbar extends React.Component {
                 <div className="navbar-collapse-header">
                   <Row>
                     <Col className="collapse-brand" xs="6">
-                      <Link to="/">
+                    
+                      <Link to="http://localhost:3000/">
                         <img
                           alt="..."
                           src={require("assets/img/brand/tigerchat.png")}

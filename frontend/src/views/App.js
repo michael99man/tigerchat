@@ -26,9 +26,11 @@ import {
 
 // core components
 import TCNavbar from "components/Navbars/TCNavbar.js";
+import AppNavbar from "components/Navbars/AppNavbar.js";
 import AppLanding from "views/AppComponents/AppLanding.js";
 import AppSearching from "views/AppComponents/AppSearching.js";
 import AppChatroom from "views/AppComponents/AppChatroom.js";
+import SharedSection from "components/Navbars/Section.js";
 
 import {APP_MODES, SYSTEM_MESSAGES, MATCH_MODE} from "views/Constants.js"
 
@@ -199,6 +201,9 @@ class App extends React.Component {
               </Container>
             </section>
             {/* 1st Hero Variation */}
+          </div>
+          <div>
+            <SharedSection />
           </div>
         </main>
       </>
