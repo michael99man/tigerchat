@@ -13,7 +13,9 @@ const app = require('express')();
 const server = require("http").createServer(app)
 const REACT_SERVER = process.env.REACT_SERVER
 const auth = require("./auth")
-const { registerSocketHooks } = require("./app")
+const { registerSocketHooks, getNumUsers } = require("./app")
+
+
 
 if (REACT_SERVER === undefined) {
     console.error("Error: REACT_SERVER not set")
@@ -63,8 +65,12 @@ app.get('/', (req, res) => {
     res.send("This page does not exist.");
 })
 
+app.get('/users', (req, res) => {
+    res.json({numUsers: getNumUsers()});
+})
+
 // TEST-ONLY: login page to set session cookie, simulating CAS auth
-app.get('/login', auth.handleLogin);
+app.get('/login', auth.handleLogin)
 
 
 // initialize server

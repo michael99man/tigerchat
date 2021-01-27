@@ -192,6 +192,10 @@ class App extends React.Component {
   }
 
   render() {
+    var numUserString = "";
+    if (this.state.totalCount>1){
+      numUserString += "Number of people online: " + this.state.totalCount;
+    }
     return (
       
       <>
@@ -206,7 +210,7 @@ class App extends React.Component {
           
             {/* shape Hero */}
             <section className="section section-lg section-shaped fullscreen">
-            <text><center>Number of people online: {this.state.totalCount}</center></text>
+            <text><center> {numUserString} </center></text>
               <Container className="py-lg-md d-flex justify-content-center mt-5">
               
                 {/* Show different card content based on state */}

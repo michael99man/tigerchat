@@ -33,8 +33,6 @@ const MATCH_MODE = {
 /*
  * State variables
  */
-
-var clientCount = 0
 var ROOM_ID_COUNTER = 0
 // map of room_id -> message list
 const messages = new Map()
@@ -186,7 +184,7 @@ function matchUsers(io, netid_a, netid_b) {
 // returns whether or not to terminate connection
 const onSocketConnect = (io, socket, netid) => {
     var netid = auth.getNetid(socket.request)
-    io.emit('totalCount',clientCount)
+    io.emit('totalCount', connections.size)
     // terminate if not logged in
     if (!netid) {
         socket.emit("system", SYSTEM_MESSAGES.NO_LOGIN)
@@ -213,10 +211,9 @@ const onSocketConnect = (io, socket, netid) => {
     console.log("Sending profile: " + JSON.stringify(profile))
     socket.emit("profile", profile)
     socket.emit("user_id", user_id)
-    clientCount++;
     console.log(`A user connected with netid ${netid}, user_id ${user_id}`)
-    console.log('Number of users: ', clientCount)
-    io.emit('totalCount',clientCount)
+    console.log('Number of users: ', connections.size)
+    io.emit('totalCount',connections.size)
     return false
 }
 
@@ -236,10 +233,8 @@ const onSocketDisconnect = (io, socket, netid) => {
         }
         connections.delete(netid)
     }
-
-    clientCount--;
     console.log(`User ${netid} has disconnected`);
-    console.log('Number of users: ', clientCount)
+    console.log('Number of users: ', connections.size)
 }
 
 const onMessage = (io, socket, msg) => {
@@ -308,6 +303,9 @@ const onElectReveal = (io, socket, doReveal) => {
     }
 }
 
+function returnNumUsers(){
+    return connections.size;
+}
 
 /*
  * Define core socket hooks

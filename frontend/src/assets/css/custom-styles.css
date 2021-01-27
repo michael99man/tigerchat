@@ -84,6 +84,7 @@
 .nav-link-inner--text {
   font-family: Monaco;
   color: #B2AFAE; 
+  white-space: nowrap;
 }
 
 .nav-link-inner--text:hover {
@@ -99,6 +100,7 @@
 
 .navbar-main {
   background-color: #ffffff !important;
+  white-space: nowrap;
 }
 
 .text-orange {
