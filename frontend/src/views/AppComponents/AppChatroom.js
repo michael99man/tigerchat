@@ -50,6 +50,22 @@ class AppChatroom extends React.Component {
       console.log(`Received message ${msg}`)
       // append to messages list
       this.setState({ messages: [...this.state.messages, { id: msg.id, sender_uid: msg.sender_uid, text: msg.text }] })
+
+      // if sender is other person, changes favicon to notif
+      if (msg.sender_uid !== this.props.getUserId()) {
+        document.getElementById('tabicon').href = "notif-favicon.ico";
+        // document.getElementById('tabicon').href = "favicon-notif/favicon.ico";
+      }
+
+      // changes favicon back to original
+      function switchBack() {
+        document.getElementById('tabicon').href = "favicon.ico";
+        // document.getElementById('tabicon').href = "favicon/favicon.ico";
+       }
+
+      // after clicking anywhere on screen, change favicon back
+      document.onclick = function(){switchBack();};
+
     });
 
     // detect when the other person is typing
