@@ -49,6 +49,8 @@ class App extends React.Component {
 
     // my profile information
     profile: null,
+    totalCount: null,
+    
   };
 
   componentDidMount() {
@@ -90,6 +92,11 @@ class App extends React.Component {
     socket.on("user_id", user_id => {
       console.log(`Received my user_id ${user_id}`)
       this.setState({ user_id: user_id });
+    });
+
+    socket.on("totalCount", totalCount => {
+      console.log(`Number of users: ${totalCount}`)
+      this.setState({ totalCount: totalCount });
     });
 
     socket.on("match", data => {
@@ -186,7 +193,9 @@ class App extends React.Component {
 
   render() {
     return (
+      
       <>
+      
         <TCNavbar />
         <Prompt
           when={this.state.mode == APP_MODES.IN_ROOM && !this.state.otherDisconnected}
@@ -194,16 +203,19 @@ class App extends React.Component {
         />
         <main ref="main">
           <div className="position-relative">
+          
             {/* shape Hero */}
             <section className="section section-lg section-shaped fullscreen">
+            <text><center>Number of people online: {this.state.totalCount}</center></text>
               <Container className="py-lg-md d-flex justify-content-center mt-5">
-
+              
                 {/* Show different card content based on state */}
                 {this.AppCard()}
               </Container>
             </section>
             {/* 1st Hero Variation */}
           </div>
+          
           <div>
             <SharedSection />
           </div>

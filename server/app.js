@@ -186,6 +186,7 @@ function matchUsers(io, netid_a, netid_b) {
 // returns whether or not to terminate connection
 const onSocketConnect = (io, socket, netid) => {
     var netid = auth.getNetid(socket.request)
+    io.emit('totalCount',clientCount)
     // terminate if not logged in
     if (!netid) {
         socket.emit("system", SYSTEM_MESSAGES.NO_LOGIN)
@@ -195,6 +196,8 @@ const onSocketConnect = (io, socket, netid) => {
     // terminate if socket connection already exists
     if (connections.has(netid)) {
         socket.emit("system", SYSTEM_MESSAGES.ALREADY_CONNECTED)
+        
+        
         return true
     }
 
@@ -211,8 +214,9 @@ const onSocketConnect = (io, socket, netid) => {
     socket.emit("profile", profile)
     socket.emit("user_id", user_id)
     clientCount++;
-    console.log('Number of users: ', clientCount)
     console.log(`A user connected with netid ${netid}, user_id ${user_id}`)
+    console.log('Number of users: ', clientCount)
+    io.emit('totalCount',clientCount)
     return false
 }
 
@@ -234,8 +238,8 @@ const onSocketDisconnect = (io, socket, netid) => {
     }
 
     clientCount--;
-    console.log('Number of users: ', clientCount)
     console.log(`User ${netid} has disconnected`);
+    console.log('Number of users: ', clientCount)
 }
 
 const onMessage = (io, socket, msg) => {

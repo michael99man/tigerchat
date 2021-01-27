@@ -65,7 +65,9 @@ class Index extends React.Component {
 
           </div>
         </main>
+        <title>Bob</title>
       </>
+      
     );
   }
 }
