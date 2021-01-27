@@ -34,6 +34,7 @@ const MATCH_MODE = {
  * State variables
  */
 
+var clientCount = 0
 var ROOM_ID_COUNTER = 0
 // map of room_id -> message list
 const messages = new Map()
@@ -209,7 +210,8 @@ const onSocketConnect = (io, socket, netid) => {
     console.log("Sending profile: " + JSON.stringify(profile))
     socket.emit("profile", profile)
     socket.emit("user_id", user_id)
-
+    clientCount++;
+    console.log('Number of users: ', clientCount)
     console.log(`A user connected with netid ${netid}, user_id ${user_id}`)
     return false
 }
@@ -231,8 +233,8 @@ const onSocketDisconnect = (io, socket, netid) => {
         connections.delete(netid)
     }
 
-
-
+    clientCount--;
+    console.log('Number of users: ', clientCount)
     console.log(`User ${netid} has disconnected`);
 }
 
@@ -306,7 +308,9 @@ const onElectReveal = (io, socket, doReveal) => {
 /*
  * Define core socket hooks
  */
+
 function registerSocketHooks(io) {
+
     // define handler functions for each event
     io.on('connection', ((socket) => {
         var terminate = onSocketConnect(io, socket)
@@ -318,6 +322,7 @@ function registerSocketHooks(io) {
         // handle disconnection
         socket.on('disconnect', () => {
             onSocketDisconnect(io, socket)
+            
         });
 
         socket.on('find-match', (match_mode) => {

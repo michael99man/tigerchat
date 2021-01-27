@@ -34,6 +34,7 @@ import SharedSection from "components/Navbars/Section.js";
 
 import {APP_MODES, SYSTEM_MESSAGES, MATCH_MODE} from "views/Constants.js"
 
+
 class App extends React.Component {
   // retains general state of the app and connection
   state = {
@@ -73,11 +74,12 @@ class App extends React.Component {
       window.onbeforeunload = undefined
     }
   }
-
+  
   initSocket() {
     console.log(process.env.REACT_APP_API_ENDPOINT)
     const socket = socketIOClient(process.env.REACT_APP_API_ENDPOINT, { withCredentials: true });
     this.setState({ socket: socket })
+    
 
     // receive information about myself
     socket.on("profile", data => {
