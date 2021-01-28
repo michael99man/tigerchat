@@ -50,6 +50,19 @@ class AppChatroom extends React.Component {
       console.log(`Received message ${msg}`)
       // append to messages list
       this.setState({ messages: [...this.state.messages, { id: msg.id, sender_uid: msg.sender_uid, text: msg.text }] })
+
+      // if sender is other person, changes favicon to notif
+      if (msg.sender_uid !== this.props.getUserId()) {
+        document.getElementById('tabicon').href = "favicon-notif/favicon.ico";
+      }
+
+      // changes favicon back to original
+      function switchBack() {
+        document.getElementById('tabicon').href = "favicon/favicon.ico";
+       }
+
+      // after clicking anywhere on screen, change favicon back
+        window.addEventListener("focus", switchBack)
     });
 
     // detect when the other person is typing
@@ -237,6 +250,39 @@ class AppChatroom extends React.Component {
     }
   }
 
+  renderMessages() {
+     // writes out all messages
+     if (this.state.messages.length === 0) return null;
+     let lastid = this.state.messages[0].sender_uid;  
+     let messageList =[];      
+      for (let data of this.state.messages) {
+        messageList.push(
+
+        <div key={data.id} className = {lastid !== data.sender_uid ? "mt-3" : ""}>
+          {this.props.getUserId() === data.sender_uid ? (
+            <li className="self-msg" key={data.id}>
+              <div className="msg">
+                
+                <div className="message"> {data.text}</div>
+              </div>
+            </li>
+          ) : (
+              <li className="other-msg" key={data.id}>
+                <div className="msg">
+                  <p>{this.state.otherNetid === null ? "Stranger" : this.state.otherNetid}
+                  </p>
+                  <div className="message"> {data.text} </div>
+                </div>
+              </li>
+            )}
+        </div>
+      
+        )
+        lastid = data.sender_uid;
+        
+      } return messageList;
+  }
+
   render() {
     return (
       <>
@@ -245,43 +291,21 @@ class AppChatroom extends React.Component {
           <this.RevealedBanner />
           <CardBody className="py-md align-items-center">
             <Row className="row-grid justify-content-center">
-                <Button
-                  className="mt-4"
-                  color="gray" 
-                  onclick ={e => this.leaveChat()}
-                  href={process.env.REACT_APP_API_ENDPOINT + "/login"} >
-                 Leave conversation </Button>
+                
               </Row>
 
             <Row className="row-grid justify-content-center align-items-center">
               <h6 className="text-orange text-uppercase">
-                YOU'RE CHATTING!
+                Icebreaker: Is Forbes worth the walk?
             </h6>
             </Row>
 
             <div className="chatWindow">
               <ul className="chat" id="chatList">
-                { // writes out all messages
-                  this.state.messages.map(data => (
-                    <div key={data.id}>
-                      {this.props.getUserId() === data.sender_uid ? (
-                        <li className="self-msg" key={data.id}>
-                          <div className="msg">
-                            <p>You</p>
-                            <div className="message"> {data.text}</div>
-                          </div>
-                        </li>
-                      ) : (
-                          <li className="other-msg" key={data.id}>
-                            <div className="msg">
-                              <p>{this.state.otherNetid === null ? "Stranger" : this.state.otherNetid}
-                              </p>
-                              <div className="message"> {data.text} </div>
-                            </div>
-                          </li>
-                        )}
-                    </div>
-                  ))}
+                
+                {
+                  this.renderMessages()
+                }
                 
                 {this.state.otherIsTyping ? ( 
                   <div>
@@ -316,7 +340,7 @@ class AppChatroom extends React.Component {
             </div>
             <Input
               className="msg-input"
-              placeholder="Text your message here"
+              placeholder="Type your message here"
               type="text"
               name="msgInput"
               onChange={e => this.handleInputChange(e)}
@@ -327,7 +351,7 @@ class AppChatroom extends React.Component {
             <Row className="row-grid justify-content-center">
               <Button
                 className="mt-4"
-                color="orange"
+                color= "orange"
                 onClick={e => {
                   e.preventDefault();
                   // flip the elect state
@@ -336,6 +360,22 @@ class AppChatroom extends React.Component {
                 }} >
                 {this.state.electedReveal ? "Cancel Reveal" : "Reveal your identity"}
               </Button>
+              <Button
+                  className="mt-4"
+                  onClick ={e => this.leaveChat()}
+                  href={process.env.REACT_APP_API_ENDPOINT + "/login"} >
+                 Leave conversation
+                </Button>
+            </Row>
+          
+          <Row className="row-grid justify-content-center">
+          <Button
+                  button id ="report"
+                  size="sm"
+                  className="mt-2"
+                  color="gray">
+                 Report
+                </Button>
             </Row>
           </CardBody>
         </Card>

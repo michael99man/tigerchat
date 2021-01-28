@@ -14,7 +14,9 @@ const server = require("http").createServer(app)
 require('dotenv').config();
 const REACT_SERVER = process.env.NODE_ENV === "production" ? process.env.PROD_SERVER : process.env.DEV_SERVER
 const auth = require("./auth")
-const { registerSocketHooks } = require("./app")
+const { registerSocketHooks, getNumUsers} = require("./app")
+
+
 
 if (REACT_SERVER === undefined) {
     console.error("Error: REACT_SERVER not set")
@@ -64,8 +66,13 @@ app.get('/', (req, res) => {
     res.send("This page does not exist.");
 })
 
+app.get('/users', (req, res) => {
+    var users = getNumUsers();
+    res.json({numUsers: users});
+})
+
 // TEST-ONLY: login page to set session cookie, simulating CAS auth
-app.get('/login', auth.handleLogin);
+app.get('/login', auth.handleLogin)
 
 
 // initialize server

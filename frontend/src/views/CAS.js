@@ -16,6 +16,8 @@
 
 */
 import React from "react";
+import SharedSection from "components/Navbars/Section.js";
+
 
 // reactstrap components
 import {
@@ -30,6 +32,7 @@ import {
 
 // core components
 import TCNavbar from "components/Navbars/TCNavbar.js";
+import AppNavbar from "components/Navbars/AppNavbar.js";
 
 class CAS extends React.Component {
   state = { netid: Math.random().toString(36).substring(7), password: "password1" }
@@ -58,7 +61,7 @@ class CAS extends React.Component {
   render() {
     return (
       <>
-        <TCNavbar />
+        <AppNavbar />
         <main ref="main">
           <div className="position-relative fullscreen">
             {/* shape Hero */}
@@ -122,6 +125,9 @@ class CAS extends React.Component {
               </Container>
             </section>
             {/* 1st Hero Variation */}
+          </div>
+          <div>
+            <SharedSection/>
           </div>
         </main>
       </>
