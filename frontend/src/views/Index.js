@@ -110,7 +110,6 @@ class Index extends React.Component {
         <main ref="main">
           <div className="position-relative">
             <TCHero />
-<<<<<<< HEAD
             <section className="section section-lg" id="how-section">
               <Container>
                 <Row className="row-grid align-items-center">
@@ -246,13 +245,9 @@ class Index extends React.Component {
                   </svg>
                 </div>
               </Container>
-=======
-
->>>>>>> Sean_branch
 
             <SharedSection />
 
-<<<<<<< HEAD
             <section className="section bg-secondary" id="values-section">
               <Container>
                 <div className="align-items-center d-flex flex-row">
@@ -529,14 +524,11 @@ class Index extends React.Component {
                 </svg>
               </div>
               */}
-            </section>
-=======
->>>>>>> Sean_branch
+              </section>
+              </section>
           </div>
-        </main>
-        <title>Bob</title>
+          </main>
       </>
-      
     );
   }
 }
