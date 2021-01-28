@@ -33,7 +33,6 @@ const MATCH_MODE = {
 /*
  * State variables
  */
-
 var ROOM_ID_COUNTER = 0
 // map of room_id -> message list
 const messages = new Map()
@@ -185,6 +184,7 @@ function matchUsers(io, netid_a, netid_b) {
 // returns whether or not to terminate connection
 const onSocketConnect = (io, socket, netid) => {
     var netid = auth.getNetid(socket.request)
+    io.emit('totalCount', connections.size)
     // terminate if not logged in
     if (!netid) {
         socket.emit("system", SYSTEM_MESSAGES.NO_LOGIN)
@@ -194,6 +194,8 @@ const onSocketConnect = (io, socket, netid) => {
     // terminate if socket connection already exists
     if (connections.has(netid)) {
         socket.emit("system", SYSTEM_MESSAGES.ALREADY_CONNECTED)
+        
+        
         return true
     }
 
@@ -209,8 +211,9 @@ const onSocketConnect = (io, socket, netid) => {
     console.log("Sending profile: " + JSON.stringify(profile))
     socket.emit("profile", profile)
     socket.emit("user_id", user_id)
-
     console.log(`A user connected with netid ${netid}, user_id ${user_id}`)
+    console.log('Number of users: ', connections.size)
+    io.emit('totalCount',connections.size)
     return false
 }
 
@@ -230,10 +233,8 @@ const onSocketDisconnect = (io, socket, netid) => {
         }
         connections.delete(netid)
     }
-
-
-
     console.log(`User ${netid} has disconnected`);
+    console.log('Number of users: ', connections.size)
 }
 
 const onMessage = (io, socket, msg) => {
@@ -302,11 +303,16 @@ const onElectReveal = (io, socket, doReveal) => {
     }
 }
 
+function getNumUsers(){
+    return connections.size;
+}
 
 /*
  * Define core socket hooks
  */
+
 function registerSocketHooks(io) {
+
     // define handler functions for each event
     io.on('connection', ((socket) => {
         var terminate = onSocketConnect(io, socket)
@@ -318,6 +324,7 @@ function registerSocketHooks(io) {
         // handle disconnection
         socket.on('disconnect', () => {
             onSocketDisconnect(io, socket)
+            
         });
 
         socket.on('find-match', (match_mode) => {
@@ -342,4 +349,4 @@ function registerSocketHooks(io) {
     }).bind(io));
 }
 
-module.exports = { registerSocketHooks };
+module.exports = { registerSocketHooks, getNumUsers};

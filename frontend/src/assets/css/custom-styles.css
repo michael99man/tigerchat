@@ -88,11 +88,14 @@
 
 .nav-link-inner--text {
   font-family: Monaco;
-  color: #B2AFAE !important; 
+  color: #B2AFAE; 
+  white-space: nowrap;
 }
 
 .nav-link-inner--text:hover {
   font-weight: bold;
+  background-color: black;
+  color: #ff8f00; 
   text-decoration: underline;
 }
 
@@ -102,6 +105,7 @@
 
 .navbar-main {
   background-color: #ffffff !important;
+  white-space: nowrap;
 }
 
 .text-orange {

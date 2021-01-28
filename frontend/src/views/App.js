@@ -26,11 +26,14 @@ import {
 
 // core components
 import TCNavbar from "components/Navbars/TCNavbar.js";
+import AppNavbar from "components/Navbars/AppNavbar.js";
 import AppLanding from "views/AppComponents/AppLanding.js";
 import AppSearching from "views/AppComponents/AppSearching.js";
 import AppChatroom from "views/AppComponents/AppChatroom.js";
+import SharedSection from "components/Navbars/Section.js";
 
 import {APP_MODES, SYSTEM_MESSAGES, MATCH_MODE} from "views/Constants.js"
+
 
 class App extends React.Component {
   // retains general state of the app and connection
@@ -46,6 +49,8 @@ class App extends React.Component {
 
     // my profile information
     profile: null,
+    totalCount: null,
+    
   };
 
   componentDidMount() {
@@ -71,11 +76,12 @@ class App extends React.Component {
       window.onbeforeunload = undefined
     }
   }
-
+  
   initSocket() {
     console.log(process.env.REACT_APP_API_ENDPOINT)
     const socket = socketIOClient(process.env.REACT_APP_API_ENDPOINT, { withCredentials: true });
     this.setState({ socket: socket })
+    
 
     // receive information about myself
     socket.on("profile", data => {
@@ -86,6 +92,11 @@ class App extends React.Component {
     socket.on("user_id", user_id => {
       console.log(`Received my user_id ${user_id}`)
       this.setState({ user_id: user_id });
+    });
+
+    socket.on("totalCount", totalCount => {
+      console.log(`Number of users: ${totalCount}`)
+      this.setState({ totalCount: totalCount });
     });
 
     socket.on("match", data => {
@@ -181,8 +192,14 @@ class App extends React.Component {
   }
 
   render() {
+    var numUserString = "";
+    if (this.state.totalCount>1){
+      numUserString += "Number of people online: " + this.state.totalCount;
+    }
     return (
+      
       <>
+      
         <TCNavbar />
         <Prompt
           when={this.state.mode === APP_MODES.IN_ROOM && !this.state.otherDisconnected}
@@ -190,15 +207,21 @@ class App extends React.Component {
         />
         <main ref="main">
           <div className="position-relative">
+          
             {/* shape Hero */}
             <section className="section section-lg section-shaped fullscreen">
+            <text><center> {numUserString} </center></text>
               <Container className="py-lg-md d-flex justify-content-center mt-5">
-
+              
                 {/* Show different card content based on state */}
                 {this.AppCard()}
               </Container>
             </section>
             {/* 1st Hero Variation */}
+          </div>
+          
+          <div>
+            <SharedSection />
           </div>
         </main>
       </>

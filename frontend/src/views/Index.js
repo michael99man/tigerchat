@@ -27,6 +27,8 @@ import {
 
 // core components
 import TCNavbar from "components/Navbars/TCNavbar.js";
+import SharedSection from "components/Navbars/Section.js";
+import SimpleFooter from "components/Footers/SimpleFooter.js";
 
 // nodejs library that concatenates classes
 // import classnames from "classnames";
@@ -108,6 +110,7 @@ class Index extends React.Component {
         <main ref="main">
           <div className="position-relative">
             <TCHero />
+<<<<<<< HEAD
             <section className="section section-lg" id="how-section">
               <Container>
                 <Row className="row-grid align-items-center">
@@ -243,9 +246,13 @@ class Index extends React.Component {
                   </svg>
                 </div>
               </Container>
+=======
 
-            </section>
+>>>>>>> Sean_branch
 
+            <SharedSection />
+
+<<<<<<< HEAD
             <section className="section bg-secondary" id="values-section">
               <Container>
                 <div className="align-items-center d-flex flex-row">
@@ -523,9 +530,13 @@ class Index extends React.Component {
               </div>
               */}
             </section>
+=======
+>>>>>>> Sean_branch
           </div>
         </main>
+        <title>Bob</title>
       </>
+      
     );
   }
 }
