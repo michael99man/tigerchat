@@ -355,6 +355,7 @@ class AppChatroom extends React.Component {
           <Row className="row-grid justify-content-center">
           <Button
                   button id ="report"
+                  size="sm"
                   className="mt-2"
                   color="gray">
                  Report
