@@ -219,10 +219,6 @@ class App extends React.Component {
             </section>
             {/* 1st Hero Variation */}
           </div>
-          
-          <div>
-            <SharedSection />
-          </div>
         </main>
       </>
     );

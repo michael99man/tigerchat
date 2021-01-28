@@ -246,8 +246,6 @@ class Index extends React.Component {
                 </div>
               </Container>
 
-            <SharedSection />
-
             <section className="section bg-secondary" id="values-section">
               <Container>
                 <div className="align-items-center d-flex flex-row">
