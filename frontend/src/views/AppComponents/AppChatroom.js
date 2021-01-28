@@ -50,6 +50,19 @@ class AppChatroom extends React.Component {
       console.log(`Received message ${msg}`)
       // append to messages list
       this.setState({ messages: [...this.state.messages, { id: msg.id, sender_uid: msg.sender_uid, text: msg.text }] })
+
+      // if sender is other person, changes favicon to notif
+      if (msg.sender_uid !== this.props.getUserId()) {
+        document.getElementById('tabicon').href = "favicon-notif/favicon.ico";
+      }
+
+      // changes favicon back to original
+      function switchBack() {
+        document.getElementById('tabicon').href = "favicon/favicon.ico";
+       }
+
+      // after clicking anywhere on screen, change favicon back
+        window.addEventListener("focus", switchBack)
     });
 
     // detect when the other person is typing
@@ -278,12 +291,7 @@ class AppChatroom extends React.Component {
           <this.RevealedBanner />
           <CardBody className="py-md align-items-center">
             <Row className="row-grid justify-content-center">
-                <Button
-                  className="mt-4"
-                  color="gray" 
-                  onclick ={e => this.leaveChat()}
-                  href={process.env.REACT_APP_API_ENDPOINT + "/login"} >
-                 Leave conversation </Button>
+                
               </Row>
 
             <Row className="row-grid justify-content-center align-items-center">
@@ -343,7 +351,7 @@ class AppChatroom extends React.Component {
             <Row className="row-grid justify-content-center">
               <Button
                 className="mt-4"
-                color="orange"
+                color= "orange"
                 onClick={e => {
                   e.preventDefault();
                   // flip the elect state
@@ -352,6 +360,22 @@ class AppChatroom extends React.Component {
                 }} >
                 {this.state.electedReveal ? "Cancel Reveal" : "Reveal your identity"}
               </Button>
+              <Button
+                  className="mt-4"
+                  onClick ={e => this.leaveChat()}
+                  href={process.env.REACT_APP_API_ENDPOINT + "/login"} >
+                 Leave conversation
+                </Button>
+            </Row>
+          
+          <Row className="row-grid justify-content-center">
+          <Button
+                  button id ="report"
+                  size="sm"
+                  className="mt-2"
+                  color="gray">
+                 Report
+                </Button>
             </Row>
           </CardBody>
         </Card>
