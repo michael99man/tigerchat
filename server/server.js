@@ -13,7 +13,7 @@ const app = require('express')();
 const server = require("http").createServer(app)
 const REACT_SERVER = process.env.REACT_SERVER
 const auth = require("./auth")
-const { registerSocketHooks, getNumUsers } = require("./app")
+const { registerSocketHooks, getNumUsers} = require("./app")
 
 
 
@@ -66,7 +66,8 @@ app.get('/', (req, res) => {
 })
 
 app.get('/users', (req, res) => {
-    res.json({numUsers: getNumUsers()});
+    var users = getNumUsers();
+    res.json({numUsers: users});
 })
 
 // TEST-ONLY: login page to set session cookie, simulating CAS auth

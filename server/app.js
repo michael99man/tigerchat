@@ -303,7 +303,7 @@ const onElectReveal = (io, socket, doReveal) => {
     }
 }
 
-function returnNumUsers(){
+function getNumUsers(){
     return connections.size;
 }
 
@@ -349,4 +349,4 @@ function registerSocketHooks(io) {
     }).bind(io));
 }
 
-module.exports = { registerSocketHooks };
+module.exports = { registerSocketHooks, getNumUsers};
