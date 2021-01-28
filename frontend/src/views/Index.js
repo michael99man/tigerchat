@@ -34,6 +34,14 @@ import TCNavbar from "components/Navbars/TCNavbar.js";
 // index page sections
 import TCHero from "./IndexSections/TCHero.js";
 
+// lottie animations
+import Lottie from 'react-lottie'
+import matchInterests from './IndexSections/lotties/matchinterests.json'
+import chatNoPressure from './IndexSections/lotties/chatbubbles.json'
+import revealIdentity from './IndexSections/lotties/revealidentity.json'
+import whyWereHere from './IndexSections/lotties/makefriends.json'
+import ourValues from './IndexSections/lotties/heart.json'
+
 class Index extends React.Component {
   state = {};
   componentDidMount() {
@@ -42,6 +50,58 @@ class Index extends React.Component {
     this.refs.main.scrollTop = 0;
   }
   render() {
+
+    // match by interest
+    const defaultOptions = {
+      loop: true,
+      autoplay: true,
+      animationData: matchInterests,
+      rendererSettings: {
+        preserveAspectRatio: 'xMidYMid slice'
+      }
+    };
+
+    // chat with no pressure
+    const defaultOptions2 = {
+      loop: true,
+      autoplay: true,
+      animationData: chatNoPressure,
+      rendererSettings: {
+        preserveAspectRatio: 'xMidYMid slice'
+      }
+    };
+
+    // reveal identity animation
+    const defaultOptions3 = {
+      loop: true,
+      autoplay: true,
+      animationData: revealIdentity,
+      rendererSettings: {
+        preserveAspectRatio: 'xMidYMid slice'
+      }
+    };
+
+    // why we're here animation
+    const defaultOptions4 = {
+      loop: true,
+      autoplay: true,
+      animationData: whyWereHere,
+      rendererSettings: {
+        preserveAspectRatio: 'xMidYMid slice'
+      }
+    };
+
+    // our values animation
+    // why we're here animation
+    const defaultOptions5 = {
+      loop: true,
+      autoplay: true,
+      animationData: ourValues,
+      rendererSettings: {
+        preserveAspectRatio: 'xMidYMid slice'
+      }
+    };
+
     return (
       <>
         <TCNavbar />
@@ -58,7 +118,7 @@ class Index extends React.Component {
                       src={require("assets/img/theme/promo-1.png")}
                     />*/}
                   </Col>
-                  <Col className="order-md-1" md="6">
+                  <Col className="order-md-1" md="20">
                     <div className="pr-md-5">
                       {/* <div className="icon icon-lg icon-shape icon-shape-success shadow rounded-circle mb-5">
                         <i className="ni ni-settings-gear-65" />
@@ -67,9 +127,9 @@ class Index extends React.Component {
                       <p class="lead">
                         Tigerchat allows you to meet other Princeton students under the condition of anonymity on a text-based platform.
                     </p>
-                      <ul className="list-unstyled mt-5">
+                      <ul className="list-unstyled mt-5 w-50 mx-auto">
                         <li className="py-2">
-                          <div className="d-flex align-items-center">
+                          <div className="d-flex align-items-center w-100 flex-row justify-content-around">
                             {/*<div>
                               <Badge
                                 className="badge-circle mr-3"
@@ -78,15 +138,25 @@ class Index extends React.Component {
                                 <i className="ni ni-settings-gear-65" />
                               </Badge>
                             </div>*/}
-                            <div>
-                              <p>
+
+                            <Col className="order-md-1" md="5">
+                              {/* Match by Interest animation */} 
+                            <Lottie options={defaultOptions}
+                                  height={300}
+                                  width={300}
+                                />
+                                </Col>
+
+                            <Col className="order-md-1" md="5">
+                              <p className="w-100">
                                 Match by interest
-                            </p>
-                            </div>
+                              </p>
+                              </Col>
+
                           </div>
                         </li>
                         <li className="py-2">
-                          <div className="d-flex align-items-center">
+                          <div className="d-flex align-items-center w-100 flex-row justify-content-around">
                             {/*<div>
                               <Badge
                                 className="badge-circle mr-3"
@@ -95,13 +165,22 @@ class Index extends React.Component {
                                 <i className="ni ni-html5" />
                               </Badge>
                             </div>*/}
-                            <div>
-                              <p>Chat with no pressure</p>
-                            </div>
+                            <Col className="order-md-1" md="5">
+                              <p className="w-100">Chat with no pressure</p>
+                              </Col>
+
+                              <Col className="order-md-1" md="5">
+                              {/* Chat animation */} 
+                              <Lottie options={defaultOptions2}
+                                  height={250}
+                                  width={250}
+                                  style={{marginLeft : "-75px"}}
+                                />
+                                </Col>
                           </div>
                         </li>
                         <li className="py-2">
-                          <div className="d-flex align-items-center">
+                          <div className="d-flex align-items-center w-100 flex-row">
                             {/*<div>
                               <Badge
                                 className="badge-circle mr-3"
@@ -110,11 +189,12 @@ class Index extends React.Component {
                                 <i className="ni ni-satisfied" />
                               </Badge>
                             </div>*/}
-                            <div>
-                              <p>
-                                Reveal identity or log out
-                            </p>
-                            </div>
+                            {/* Reveal Identity animation */} 
+                            <Lottie options={defaultOptions3}
+                                  height={294.12}
+                                  width={352.94}
+                                />
+                              <p className="w-75">Reveal identity or log out</p>
                           </div>
                         </li>
                       </ul>
@@ -136,6 +216,12 @@ class Index extends React.Component {
                       incredible network you have at university; it's a non-judgemental
                       platform where you can meet peers, make new friends, and chat about the going-on's in
                       a safe and secure way.
+
+                      {/* Why We're Here animation */} 
+                      <Lottie options={defaultOptions4}
+                                  height={322.8}
+                                  width={450}
+                      />
                   </p>
                     <p class="authors">Created by ...</p>
                   </Col>
@@ -162,8 +248,7 @@ class Index extends React.Component {
 
             <section className="section bg-secondary" id="values-section">
               <Container>
-                <Row className="row-grid align-items-center">
-                  <Col md="6">
+                <div className="align-items-center d-flex flex-row">
                     {/*<Card className="bg-default shadow border-0">
                       <CardImg
                         alt="..."
@@ -197,12 +282,18 @@ class Index extends React.Component {
                       </p>
                       </blockquote>
                     </Card>*/}
-                  </Col>
+    
                   <Col md="6">
-                    <div className="pl-md-5">
+                      {/* Our values animation */} 
+                      <Lottie options={defaultOptions5}
+                        height={500}
+                        width={500}
+                      />
+                    </Col>
                       {/*<div className="icon icon-lg icon-shape icon-shape-warning shadow rounded-circle mb-5">
                         <i className="ni ni-settings" />
                       </div>*/}
+                      <Col md="6">
                       <h3 className="sub">OUR VALUES</h3>
                       <p className="lead">
                         Only open to members of the Princeton community, Tigerchat provides stduents with
@@ -228,9 +319,8 @@ class Index extends React.Component {
                       >
                         A beautiful UI Kit for impactful websites
                     </a>*/}
-                    </div>
                   </Col>
-                </Row>
+                </div>
               </Container>
             </section>
 

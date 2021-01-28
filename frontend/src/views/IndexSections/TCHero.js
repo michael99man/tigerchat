@@ -15,13 +15,14 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 // reactstrap components
 import { Button, Container, Row, Col } from "reactstrap";
 
 class TCHero extends React.Component {
   render() {
+
     return (
       <>
         <div className="position-relative fullscreen">
@@ -44,6 +45,16 @@ class TCHero extends React.Component {
               <div className="col px-0">
                 <Row className="align-items-center justify-content-center">
                   <Col className="text-center" lg="6">
+
+                    {/* TigerChat Logo */}
+                    <img
+                      alt="..."
+                      className="img-fluid"
+                      src={require("assets/img/brand/tigerchatlogo.png")}
+                      style={{ width: "100px" }}
+                    />
+
+                    {/* TigerChat text */}
                     <img
                       alt="..."
                       className="img-fluid"
